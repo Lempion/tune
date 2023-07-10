@@ -27,9 +27,16 @@
                                 <div class="error error-confirm_code"></div>
                             </div>
 
-                            <div class="h-1/2 flex justify-center">
+                            <div class="h-1/2 flex justify-center text-gray-700">
                                 <p class="send_new_code underline inline-block hover:font-semibold hover:cursor-pointer">Send new code</p>
+                                <div class="timer_send_code text-sm text-gray-500 hidden flex flex-col items-center justify-start">
+                                    <p>Resending sms via</p>
+                                    <p id="timer">5 : 00</p>
+                                </div>
+
                             </div>
+
+
                         </div>
 
                         <div class="w-4/6 h-2/6 flex justify-center">
@@ -49,6 +56,8 @@
     <script>
         $(document).ready(function () {
 
+            let timeMinut = 0;
+
             $('.btn-confirm').click(function (e) {
                 e.preventDefault();
 
@@ -67,17 +76,14 @@
                         'confirm_code': $('#confirm_code').val(),
                     },
                     success: function (response) {
-                        console.log(response)
+                        if(response.success){
+                            $(location).attr('href', response.success.link)
+                        }
                     },
                     error: function (response) {
-
                         let errors = response.responseJSON.errors;
 
-                        $.each(errors, function (index, value) {
-                            $.each(value, function (indexError, message) {
-                                $('.error-' + index).append('<p class="text-sm text-red-600 pt-1">' + message + '</p>');
-                            });
-                        });
+                        showErrors(errors);
 
                         $('form').removeClass('opacity-0').addClass('opacity-100');
                         $('.load-wrapper').removeClass('opacity-100').addClass('opacity-0');
@@ -85,8 +91,10 @@
                 });
             });
 
-            $('.send_new_code').click(function (e){
+            $('.send_new_code').click(function (e) {
                 e.preventDefault();
+
+                $('.send_new_code').addClass('hidden');
 
                 $.ajax({
                     url: '{{ route('send-new-code') }}',
@@ -95,24 +103,60 @@
                         '_token': '{{ csrf_token() }}',
                     },
                     success: function (response) {
-                        console.log(response)
+                        startTimer(5);
                     },
                     error: function (response) {
-
                         let errors = response.responseJSON.errors;
 
-                        console.log(response);
+                        showErrors(errors);
                     }
                 });
             });
 
-            function alertError(message){
+            function showErrors(errors) {
+                $.each(errors, function (index, value) {
+                    $.each(value, function (indexError, message) {
+                        $('.error-' + index).append('<p class="text-sm text-red-600 pt-1">' + message + '</p>');
+                    });
+                });
+            }
+
+            function startTimer(minute) {
+
+                let timerShow = document.getElementById("timer");
+
+                timeMinut = parseInt(minute) * 60;
+
+                $('.timer_send_code').removeClass('hidden');
+
+                timer = setInterval(function () {
+                    seconds = timeMinut % 60 // Получаем секунды
+
+                    seconds = seconds < 10 ? '0' + seconds : seconds
+
+                    minutes = timeMinut / 60 % 60 // Получаем минуты
+                    // Условие если время закончилось то...
+                    if (timeMinut <= 0) {
+                        // Таймер удаляется
+                        clearInterval(timer);
+
+                        $('.timer_send_code').addClass('hidden');
+                        $('.send_new_code').removeClass('hidden');
+                    } else { // Иначе
+                        // Выводим строку в блок для показа таймера
+                        timerShow.innerHTML = `${Math.trunc(minutes)} : ${seconds}`;
+                    }
+                    --timeMinut; // Уменьшаем таймер
+                }, 1000)
+            }
+
+            function alertError(message) {
                 Swal.fire({
                     position: 'top-end',
                     icon: 'error',
                     title: message,
                     showConfirmButton: false,
-                    backdrop: `rgba(0,0,0,0)`,
+                    backdrop: `rgba(0, 0, 0, 0)`,
                     timer: 2500
                 })
             }

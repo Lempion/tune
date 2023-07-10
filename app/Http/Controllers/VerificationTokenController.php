@@ -10,8 +10,8 @@ class VerificationTokenController extends Controller
 
     static function createToken(int $minutes = 10)
     {
-//        return cookie()->make('confirm_token', Hash::make(strtoupper(substr(md5(time()), 0, 6))), 1);
-        return cookie()->make('confirm_token', Hash::make('password'), 1);
+//        return cookie()->make('confirm_token', Hash::make(strtoupper(substr(md5(time()), 0, 6))), 10);
+        return cookie()->make('confirm_token', Hash::make('password'), 10);
     }
 
     static function checkToken($token, $cookieToken)

@@ -30,10 +30,10 @@ Route::middleware('guest')->group(function () {
     Route::post('register', [RegistrationController::class, 'registration'])->name('registration');
 });
 
-Route::middleware('auth')->group(function () {
-    Route::get('verification', [VerificationController::class, 'index'])->name('verification.index');
-    Route::post('verification', [VerificationController::class, 'verification'])->name('verification.verification');
-    Route::post('send_new_code', [VerificationController::class, 'sendNewCode'])->name('send-new-code');
+Route::middleware(['auth', 'not.verified.phone'])->group(function () {
+    Route::withoutMiddleware('verified.phone')->group(function () {
+        Route::get('verification', [VerificationController::class, 'index'])->name('verification.index');
+        Route::post('verification', [VerificationController::class, 'verification'])->name('verification.verification');
+        Route::post('send_new_code', [VerificationController::class, 'sendNewCode'])->name('send-new-code');
+    });
 });
-
-

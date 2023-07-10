@@ -1,7 +1,6 @@
 @extends('layouts.app', ['title' => 'Login'])
 
 @section('content')
-    @dump($errors)
     <div class="h-full w-full bg-no-repeat bg-cover fixed flex justify-center items-center" style="background-image: url('{{ asset('storage/images/bg-l.jpg') }}')">
         <div class="h-4/6 w-2/6 bg-green-400 rounded-3xl overflow-hidden relative flex flex-col justify-end shadow-[-15px_15px_1px_1px_rgba(168,174,232,0.8)]">
             <div class="h-3/6 w-full bg-cover absolute top-0" style="background-image: url('{{ asset('storage/images/bg-form-auth2.jpg') }}')"></div>

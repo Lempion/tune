@@ -13,7 +13,7 @@
                         </div>
                     </div>
 
-                    <form class="form-register z-10 w-full h-full flex flex-col justify-center items-center transition-all duration-200 opacity-100">
+                    <form class="form-register z-10 w-full h-full flex flex-col justify-center items-center transition-all duration-200 opacity-100 relative">
                         <div class="w-4/6 mb-8">
                             <input type="text" id="phone" name="phone" maxlength="11" class="border-b-4 border-[#ffa983] rounded-none bg-gray-100/0 text-[#343d74] font-bold rounded-lg block w-full px-1.5 text-3xl focus:outline-0 focus:border-b-gray-700 hover:cursor-pointer" placeholder="Phone number" required>
                             <div class="error error-phone"></div>
@@ -26,12 +26,12 @@
                             <input type="password" id="password_confirmation" name="password_confirmation" class="border-b-4 border-[#ffa983] rounded-none bg-gray-100/0 text-[#343d74] font-bold rounded-lg block w-full px-1.5 text-3xl focus:outline-0 focus:border-b-gray-700 hover:cursor-pointer" placeholder="Confirm password" required>
                             <div class="error error-password_confirmation"></div>
                         </div>
-                        <button type="submit" class="btn-register text-white bg-orange-400 hover:bg-orange-500 font-medium rounded-lg text-3xl w-full sm:w-auto px-8 py-3 text-center shadow-[3px_3px_1px_1px_rgba(251,146,60,0.5)] hover:shadow-[3px_3px_1px_1px_rgba(251,146,60,0.9)]">
+                        <button type="submit" class="mb-8 btn-register text-white bg-orange-400 hover:bg-orange-500 font-medium rounded-lg text-3xl w-full sm:w-auto px-8 py-3 text-center shadow-[3px_3px_1px_1px_rgba(251,146,60,0.5)] hover:shadow-[3px_3px_1px_1px_rgba(251,146,60,0.9)]">
                             Registration
                         </button>
+                        <a href="{{ route('login') }}" class="absolute bottom-5 text-gray-600 font-semibold text-lg underline hover:text-gray-800">Log in</a>
                     </form>
                 </div>
-
             </div>
         </div>
     </div>

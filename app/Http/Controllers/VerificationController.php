@@ -17,7 +17,7 @@ class VerificationController extends Controller
 
         // Запилить проверку на то что код уже был выслан юзеру
 
-        if (($errors = Session::get('errors')) !== null && $errors->getBag('default')->has('verif_phone')){
+        if (($errors = Session::get('errors')) !== null && $errors->getBag('default')->has('verif_phone')) {
             $token = VerificationTokenController::createToken();
             return response(view('auth.verification', compact('phone')))->withCookie($token);
         }
@@ -42,19 +42,25 @@ class VerificationController extends Controller
         }
 
         $user = Auth::user();
-        $user->email_verified_at = date('H:i:s');
+        $user->phone_verified_at = date('H:i:s');
         $user->save();
 
-        return response()->json(['success' => '200']);
+        return response()->json(['success' => ['link' => route('home')]]);
     }
 
     public function sendNewCode()
     {
 
+        if (Cookie::get('sms_send') !== null) {
+            return response()->json(['errors' => ['confirm_code' => ['Unable to request a new code']]], 422);
+        }
+
+        $timer = cookie()->make('sms_send', 1, 5);
+
         // Логика по отправке кода на телефон
 
         $token = VerificationTokenController::createToken();
 
-        return response()->json(['success' => '200'])->cookie($token);
+        return response()->json(['success' => Cookie::get('sms_send')])->cookie($token)->cookie($timer);
     }
 }
