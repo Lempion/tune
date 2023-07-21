@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthorizationController;
+use App\Http\Controllers\MainController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\VerificationController;
 use Illuminate\Support\Facades\Route;
@@ -17,9 +18,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware(['auth', 'verified.phone'])->group(function () {
-    Route::get('/', function () {
-        return view('welcome');
-    })->name('home');
+    Route::get('/', [MainController::class, 'index'])->name('home');
+    Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'index']);
 });
 
 Route::middleware('guest')->group(function () {

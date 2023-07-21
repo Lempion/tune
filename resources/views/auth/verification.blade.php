@@ -23,7 +23,7 @@
 
                         <div class="w-4/6 h-2/6">
                             <div class="h-1/2">
-                                <input type="text" id="confirm_code" name="confirm_code" class="border-b-4 border-[#ffa983] rounded-none bg-gray-100/0 text-[#343d74] font-bold rounded-lg block w-full px-1.5 text-3xl focus:outline-0 focus:border-b-gray-700 hover:cursor-pointer" placeholder="Confirmation code" required>
+                                <input type="text" id="confirm_code" name="confirm_code" class="app-button rounded-none bg-gray-100/0 text-[#343d74] font-bold rounded-lg block w-full px-1.5 text-3xl hover:cursor-pointer" placeholder="Confirmation code" required>
                                 <div class="error error-confirm_code"></div>
                             </div>
 

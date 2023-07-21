@@ -9,7 +9,7 @@
                     @csrf
                     <div class="w-full h-full flex flex-col justify-center items-center">
                         <div class="w-4/6 @if($errors->has('phone')) mb-5 @endif mb-10">
-                            <input type="text" id="phone" name="phone" value="{{ old('phone') }}" class="border-b-4 @if($errors->has('phone')) border-b-red-500 @endif border-[#ffa983] rounded-none bg-gray-100/0 text-[#343d74] font-bold rounded-lg block w-full px-1.5 text-3xl focus:outline-0 focus:border-b-gray-700 hover:cursor-pointer" placeholder="Phone number" required>
+                            <input type="text" maxlength="11" id="phone" name="phone" value="{{ old('phone') }}" class="app-button @if($errors->has('phone')) border-b-red-500 @endif rounded-none bg-gray-100/0 text-[#343d74] font-bold rounded-lg block w-full px-1.5 text-3xl hover:cursor-pointer" placeholder="Phone number" required>
 
                             @error('phone')
                             <div>
@@ -18,7 +18,7 @@
                             @enderror
                         </div>
                         <div class="w-4/6 @if($errors->has('password')) mb-5 @endif mb-10">
-                            <input type="password" id="password" name="password" class="border-b-4 @if($errors->has('password')) border-b-red-500 @endif border-[#ffa983] rounded-none bg-gray-100/0 text-[#343d74] font-bold rounded-lg block w-full px-1.5 text-3xl focus:outline-0 focus:border-b-gray-700 hover:cursor-pointer" placeholder="Password" required>
+                            <input type="password" id="password" name="password" class="app-button @if($errors->has('password')) border-b-red-500 @endif rounded-none bg-gray-100/0 text-[#343d74] font-bold rounded-lg block w-full px-1.5 text-3xl hover:cursor-pointer" placeholder="Password" required>
 
                             @error('password')
                             <div>

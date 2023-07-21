@@ -2,8 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
-.cssload-container{
-    position:relative;
+.app-button {
+    @apply border-[#ffa983] border-0 border-b-4 focus:ring-0 focus:border-b-4 focus:outline-0 focus:border-b-gray-700;
+}
+
+.app-profile-wrapper{
+    @apply w-[56%] h-4/6 shadow-xl bg-gradient-to-t from-[#F9DED5] to-[#F5F1EA] rounded-xl overflow-hidden relative z-10 flex;
+}
+
+.app-card-wrapper {
+    @apply w-[28%] h-4/6 shadow-xl bg-gradient-to-t from-[#F9DED5] to-[#F5F1EA] relative z-10 fixed;
+}
+
+.app-card-container {
+    @apply w-full h-full overflow-hidden overflow-y-visible questionnaire-scrollbar;
+}
+
+.flex-justify-items-center {
+    @apply flex justify-center items-center;
+}
+
+.nav-item {
+    @apply hover:bg-gradient-to-r hover:from-pink-500/40 hover:to-yellow-200/40;
+}
+
+.select-nav-item {
+    @apply bg-gradient-to-l from-pink-500 to-yellow-200 text-white font-semibold;
+}
+
+.select-nav-svg {
+    @apply stroke-white stroke-2;
+}
+
+.cssload-container {
+    position: relative;
 }
 
 .cssload-whirlpool,
@@ -12,8 +44,8 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    border: 4px solid rgb(255,221,0);
-    border-left-color: rgb(235,18,221);
+    border: 4px solid rgb(255, 221, 0);
+    border-left-color: rgb(235, 18, 221);
     border-radius: 3621px;
     -o-border-radius: 3621px;
     -ms-border-radius: 3621px;
@@ -57,7 +89,6 @@
 }
 
 
-
 @keyframes cssload-rotate {
     100% {
         transform: rotate(360deg);
@@ -86,4 +117,8 @@
     100% {
         -moz-transform: rotate(360deg);
     }
+}
+
+.questionnaire-scrollbar::-webkit-scrollbar {
+    width: 0px;
 }
