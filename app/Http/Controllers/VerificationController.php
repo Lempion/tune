@@ -47,7 +47,7 @@ class VerificationController extends Controller
         $user->phone_verified_at = date('H:i:s');
         $user->save();
 
-        return response()->json(['success' => ['link' => route('home')]]);
+        return response()->json(['success' => ['link' => route('questionnaires')]]);
     }
 
     public function sendNewCode(): JsonResponse

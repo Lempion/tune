@@ -38,6 +38,11 @@ class User extends Authenticatable
         return $this->hasOne(Profile::class);
     }
 
+    public function packedProfile(): HasOne
+    {
+        return $this->hasOne(PackedProfile::class);
+    }
+
     public function interests(): BelongsToMany
     {
         return $this->belongsToMany(Interest::class);

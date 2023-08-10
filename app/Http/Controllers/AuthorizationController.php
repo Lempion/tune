@@ -28,6 +28,6 @@ class AuthorizationController extends Controller
         if (!Auth::attempt(['phone' => $request->phone, 'password' => $request->password])){
             return redirect(route('login'))->withErrors(['phone' => 'The phone or password entered is incorrect', 'password' => ' ']);
         }
-        return redirect(route('home'));
+        return redirect(route('questionnaires'));
     }
 }

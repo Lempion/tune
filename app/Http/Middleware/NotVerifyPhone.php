@@ -17,7 +17,7 @@ class NotVerifyPhone
     public function handle(Request $request, Closure $next)
     {
         if (! $request->user() || $request->user()->hasVerifiedPhone()){
-            return redirect(route('home'));
+            return redirect(route('questionnaires'));
         }
 
         return $next($request);

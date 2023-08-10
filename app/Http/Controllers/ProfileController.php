@@ -6,12 +6,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Interest;
 use App\Models\Music;
+use App\Models\PackedProfile;
 use App\Models\Profile;
+use App\Models\UserData;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use function PHPUnit\Framework\isNull;
 
 class ProfileController extends Controller
 {
@@ -81,6 +84,23 @@ class ProfileController extends Controller
         $user->music()->sync($request->music);
 
         ImageController::approveAvatars($request->images, $user);
+
+        $packedProfile = $user->packedProfile ?? new PackedProfile();
+        $preparationDataProfile = [
+            'user_id' => $user->id,
+            'name' => $request->user_name,
+            'date_birth' => $request->user_date_birth,
+            'about' => $request->user_about,
+            'education' => $request->user_education,
+            'job' => $request->user_job,
+            'movies' => $request->user_movies,
+            'books' => $request->user_books,
+            'avatars' => $request->images,
+            'interests' => $user->interests()->pluck('icon','word'),
+            'music' => $user->music()->pluck('word'),
+        ];
+        $packedProfile->profile_json = json_encode($preparationDataProfile, JSON_UNESCAPED_UNICODE);
+        $user->packedProfile()->save($packedProfile);
 
         return response()->json(['success' => 'Profile updated']);
     }
