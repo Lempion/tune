@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Cookie;
@@ -14,7 +16,7 @@ class VerificationTokenController extends Controller
         return cookie()->make('confirm_token', Hash::make('password'), 10);
     }
 
-    static function checkToken($token, $cookieToken)
+    static function checkToken($token, $cookieToken): bool
     {
         return Hash::check($token, $cookieToken);
     }

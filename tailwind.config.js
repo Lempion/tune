@@ -7,7 +7,14 @@ module.exports = {
         "./node_modules/flowbite/**/*.js",
     ],
     theme: {
-        extend: {},
+        extend: {
+            dropShadow: {
+                'pink': '0 4px 4px rgba(250,158,240, 1)',
+            },
+            strokeWidth: {
+                '0.5': '0.5px'
+            }
+        },
     },
     plugins: [
         require('flowbite/plugin')

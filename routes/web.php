@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\AuthorizationController;
+use App\Http\Controllers\ImageController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\VerificationController;
 use Illuminate\Support\Facades\Route;
@@ -19,7 +21,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified.phone'])->group(function () {
     Route::get('/', [MainController::class, 'index'])->name('home');
-    Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'index']);
+
+    Route::post('/upload_avatar', [ProfileController::class, 'uploadAvatar'])->name('profile.avatar-upload');
+    Route::delete('/delete_avatar', [ImageController::class, 'deleteAvatar'])->name('image.avatar-delete');
+
+    Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::resource('/profile', ProfileController::class)->except([
+        'edit', 'update', 'destroy', 'store', 'create'
+    ]);
 });
 
 Route::middleware('guest')->group(function () {

@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -16,7 +19,7 @@ class RegistrationController extends Controller
         return view('auth.register');
     }
 
-    public function registration(Request $request)
+    public function registration(Request $request): JsonResponse
     {
         $request->validate([
             'phone' => ['required', 'digits:11', 'unique:users,phone'],

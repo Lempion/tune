@@ -6,8 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
 
     public function up(): void
     {
@@ -15,15 +14,12 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('name');
-            $table->integer('age');
-            $table->string('about_me')->nullable();
+            $table->date('date_birth');
+            $table->string('about')->nullable();
             $table->string('education')->nullable();
             $table->string('job')->nullable();
-            $table->string('interests')->nullable();
-            $table->string('music')->nullable();
             $table->string('movies')->nullable();
             $table->string('books')->nullable();
-            $table->string('paths_photos');
             $table->integer('active')->default(0);
             $table->timestamps();
 
