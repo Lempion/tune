@@ -7,13 +7,47 @@
     <title>{{ $title }}</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'bottom-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.addEventListener('mouseenter', Swal.stopTimer)
+                toast.addEventListener('mouseleave', Swal.resumeTimer)
+            }
+        })
+
+        function alertSuccess(message) {
+            Toast.fire({
+                icon: 'success',
+                title: message
+            })
+        }
+
+        function alertError(message) {
+            Toast.fire({
+                icon: 'error',
+                title: message
+            })
+        }
+
+        function alertInfo(message) {
+            Toast.fire({
+                icon: 'info',
+                title: message
+            })
+        }
+    </script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="w-full h-full bg-no-repeat bg-cover flex justify-center" style="background-image: url('{{ asset('storage/images/bg-main.jpg') }}')">
     <div class="container fixed h-full relative">
         <header class="absolute h-14 w-full rounded-b-3xl bg-gradient-to-r from-[#F9DED5] to-[#FCEDE8] shadow-xl overflow-hidden">
-            <div class="h-full flex text-2xl text-gray-700 items-center">
+            <div class="nav-bar h-full flex text-2xl text-gray-700 items-center">
                 <div data-link="{{ route('questionnaires') }}" class="questionnaires nav-item {{ $active !== 'questionnaires' ?: 'select-nav-item' }}  flex justify-center items-center cursor-pointer h-full w-1/4 ">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 nav-svg {{ $active !== 'questionnaires' ?: 'select-nav-svg' }} stroke-gray-700">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m5.231 13.481L15 17.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v16.5c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9zm3.75 11.625a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/>

@@ -55,7 +55,7 @@ class ProfileController extends Controller
             'remove_avatars' => ['array'],
             'remove_avatars.*' => ['string', 'distinct']
         ], [
-            'images.required' => 'You need to upload at least 1 image',
+            'images.required' => 'You need to upload at least 2 image',
         ]);
 
         if (!empty($request->remove_avatars)) {
@@ -96,7 +96,7 @@ class ProfileController extends Controller
             'movies' => $request->user_movies,
             'books' => $request->user_books,
             'avatars' => $request->images,
-            'interests' => $user->interests()->pluck('icon','word'),
+            'interests' => $user->interests()->pluck('icon', 'word'),
             'music' => $user->music()->pluck('word'),
         ];
         $packedProfile->profile_json = json_encode($preparationDataProfile, JSON_UNESCAPED_UNICODE);

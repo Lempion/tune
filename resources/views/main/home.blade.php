@@ -10,100 +10,126 @@
 
     <div class="card app-card-wrapper rounded-xl transition-all duration-200 opacity-100">
         <div class="app-card-container rounded-t-xl cursor-default">
-            {{--                     Carousel start--}}
             <div id="indicators-carousel" class="relative w-full overflow-hidden" data-carousel="static">
                 <!-- Carousel wrapper -->
-                <div class="relative h-56  rounded-lg md:h-96">
-                    <!-- Item 1 -->
-                    <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
-                        <img src="{{ asset('storage/images/user_photos/img.png') }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
-                    </div>
-                    <!-- Item 2 -->
-                    <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                        <img src="{{ asset('storage/images/bg-main.jpg') }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
-                    </div>
-                    <!-- Item 3 -->
-                    <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                        <img src="{{ asset('storage/images/bg-form-auth.jpg') }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
-                    </div>
-                    <!-- Item 4 -->
-                    <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                        <img src="{{ asset('storage/images/bg-form-register.jpg') }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
-                    </div>
-                    <!-- Item 5 -->
-                    <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                        <img src="{{ asset('storage/images/bg-r.jpg') }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
-                    </div>
+                <div class="user-avatars-items relative h-56  rounded-lg md:h-96">
+                    @foreach($questionnaire['avatars'] as $avatar)
+                        <div class="hidden" data-carousel-item="{{ !$loop->first ?: 'active' }}">
+                            <img src="{{ asset('storage/avatars/' . $avatar) }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                        </div>
+                    @endforeach
                 </div>
                 <!-- Slider indicators -->
-                <div class="absolute z-30 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
-                    <button type="button" class="w-3 h-3 rounded-full" aria-current="true" aria-label="Slide 1" data-carousel-slide-to="0"></button>
-                    <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 2" data-carousel-slide-to="1"></button>
-                    <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 3" data-carousel-slide-to="2"></button>
-                    <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 4" data-carousel-slide-to="3"></button>
-                    <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 5" data-carousel-slide-to="4"></button>
+                <div class="carousel-indicator absolute z-30 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
+                    @for($i = 0; $i < count($questionnaire['avatars']); $i++)
+                        <button type="button" class="w-3 h-3 rounded-full" aria-current="{{ $i === 0 }}" data-carousel-slide-to="{{ $i }}"></button>
+                    @endfor
                 </div>
                 <!-- Slider controls -->
-                <button type="button" class="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
-                        <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white/10 dark:bg-gray-800/10 group-hover:bg-white/30 dark:group-hover:bg-gray-800/60 group-focus:ring-1 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                            <svg class="w-4 h-4 text-white dark:text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
-                            </svg>
-                            <span class="sr-only">Previous</span>
-                        </span>
+                <button id="data-carousel-prev" type="button" class="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none">
+                    <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                        <svg class="w-4 h-4 text-white dark:text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+                        </svg>
+                        <span class="hidden">Previous</span>
+                    </span>
                 </button>
-                <button type="button" class="absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
-                        <span class="inline-flex items-center justify-center w-8 h-8 rounded-full bg-white/10 dark:bg-gray-800/10 group-hover:bg-white/30 dark:group-hover:bg-gray-800/60 group-focus:ring-1 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                            <svg class="w-4 h-4 text-white dark:text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-                            </svg>
-                            <span class="sr-only">Next</span>
-                        </span>
+
+                <button id="data-carousel-next" type="button" class="absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none">
+                    <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                        <svg class="w-4 h-4 text-white dark:text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                        </svg>
+                        <span class="hidden">Next</span>
+                    </span>
                 </button>
             </div>
-            {{--            Carousel end--}}
 
-            <div class="user-information w-[95%] mx-auto">
-                <div class="mt-3 mb-1.5">
-                    <div class="name text-3xl font-bold">Vitaly</div>
-                    <div class="age text-lg font-sans">22 age</div>
+            <div class="user-information w-[95%] mx-auto space-y-4 pb-20">
+                <div class="space-y-2">
+                    <div class="user-name text-3xl font-bold">{{ $questionnaire['name'] . ', ' . $questionnaire['date_birth'] }}</div>
+
+                    <div class="user-education text-lg flex space-x-2 @if(empty($questionnaire['education'])) hidden @endif">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z"/>
+                        </svg>
+
+                        <p class="user-education_text text-gray-700">{{ $questionnaire['education'] }}</p>
+
+                    </div>
+
+                    <div class="user-job text-lg flex space-x-2 @if(empty($questionnaire['job'])) hidden @endif">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z"/>
+                        </svg>
+
+                        <p class="user-job_text text-gray-700">{{ $questionnaire['job'] }}</p>
+                    </div>
+
                 </div>
-                <div class="user-interests flex flex-wrap justify-center text-sm font-semibold space-x-2">
-                    <div class="shadow-md mb-1.5 rounded-full py-0.5 px-2 bg-green-400">Skate</div>
-                    <div class="shadow-md mb-1.5 rounded-full py-0.5 px-2 bg-green-400">Snowboard</div>
-                    <div class="shadow-md mb-1.5 rounded-full py-0.5 px-2 bg-green-400">Gaming</div>
-                    <div class="shadow-md mb-1.5 rounded-full py-0.5 px-2 bg-green-400">Walk at moon</div>
-                    <div class="shadow-md mb-1.5 rounded-full py-0.5 px-2 bg-green-400">Lorem</div>
-                    <div class="shadow-md mb-1.5 rounded-full py-0.5 px-2 bg-green-400">Lorem2</div>
+
+                <div class="user-about space-y-1">
+                    <p class="text-xl font-semibold">About me</p>
+                    <p class="user-about_text text-gray-700">{{ $questionnaire['about'] }}</p>
                 </div>
-                <div class="user-about pb-28">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam aut distinctio doloribus,
-                    eligendi esse illo, iure maiores officiis quasi, quos sed suscipit tempore temporibus unde ut
-                    velit veritatis! Itaque, quidem!
 
-                    Amet aperiam at blanditiis dignissimos dolore doloremque dolores doloribus eligendi enim
-                    excepturi facere facilis fugiat illum, minima mollitia, nesciunt nobis odio perspiciatis
-                    possimus quos rem rerum sed sit tempore temporibus!
+                <div class="user-interests space-y-1 @if(empty($questionnaire['interests'])) hidden @endif">
+                    <p class="user-interests_text text-xl font-semibold">Interests</p>
+                    <div class="user-interests_items flex flex-wrap justify-start">
+                        @if(!empty($questionnaire['interests']))
+                            @foreach($questionnaire['interests'] as $interestWord => $interestIcon)
+                                <div class="interest-item flex items-center border-2 border-orange-400/60 rounded-2xl py-0.5 px-2 my-0.5 mx-1 bg-gradient-to-r from-orange-300/60 to-pink-500/40">
+                                    <div class="mr-1">
+                                        <span class="user-interests_item_icon font-normal text-xl">{{ $interestIcon }}</span>
+                                    </div>
+                                    <p class="user-interests_item_word">{{ $interestWord }}</p>
+                                </div>
+                            @endforeach
+                        @endif
+                    </div>
+                </div>
 
-                    Laboriosam, soluta ut. Labore, perferendis, velit. Amet architecto aut, corporis ducimus eum
-                    expedita illo iste maiores molestiae necessitatibus nemo neque odit officiis quasi quibusdam
-                    ullam voluptatem! Fugit, odit quisquam? Laboriosam.
+                <div class="user-music space-y-1 @if(empty($questionnaire['music'])) hidden @endif">
+                    <p class="user-music_text text-xl font-semibold">Music</p>
+                    <div class="user-music_items flex flex-wrap justify-start">
+                        @if(!empty($questionnaire['music']))
+                            @foreach($questionnaire['music'] as $musicWord)
+                                <div class="music-item flex items-center border-2 border-orange-400/60 rounded-2xl py-0.5 px-2 my-0.5 mx-1 bg-gradient-to-r from-orange-300/60 to-pink-500/40">
+                                    <p class="user-music_item_text">{{ $musicWord }}</p>
+                                </div>
+                            @endforeach
+                        @endif
+                    </div>
+                </div>
 
-                    Commodi dolorum laborum nesciunt omnis pariatur repellat repudiandae. Asperiores at consectetur
-                    consequatur cupiditate eligendi expedita explicabo necessitatibus non praesentium quidem!
-                    Aliquam cumque dolorem eius fuga laboriosam odio officia qui voluptate!
+                <div class="user-movies-and-books space-y-1">
+                    @if(!empty($questionnaire['movies']) || !empty($questionnaire['books']))
+                        <p class="user-movies-and-books_title text-xl font-semibold">
+                            @if(!empty($questionnaire['movies']) && !empty($questionnaire['books']))
+                                Movies and books
+                            @elseif(!empty($questionnaire['movies']))
+                                Movies
+                            @elseif(!empty($questionnaire['books'])) Books @endif
+                        </p>
 
-                    Atque excepturi in iusto maiores molestias natus nisi odio quasi. Accusamus ad est et facilis
-                    libero, neque numquam possimus quos totam? Accusantium amet expedita modi, natus reiciendis
-                    repellendus reprehenderit vero?
+                        @if(!empty($questionnaire['movies']))
+                            <div class="user-movies space-x-2 flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h1.5C5.496 19.5 6 18.996 6 18.375m-3.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-1.5A1.125 1.125 0 0118 18.375M20.625 4.5H3.375m17.25 0c.621 0 1.125.504 1.125 1.125M20.625 4.5h-1.5C18.504 4.5 18 5.004 18 5.625m3.75 0v1.5c0 .621-.504 1.125-1.125 1.125M3.375 4.5c-.621 0-1.125.504-1.125 1.125M3.375 4.5h1.5C5.496 4.5 6 5.004 6 5.625m-3.75 0v1.5c0 .621.504 1.125 1.125 1.125m0 0h1.5m-1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m1.5-3.75C5.496 8.25 6 7.746 6 7.125v-1.5M4.875 8.25C5.496 8.25 6 8.754 6 9.375v1.5m0-5.25v5.25m0-5.25C6 5.004 6.504 4.5 7.125 4.5h9.75c.621 0 1.125.504 1.125 1.125m1.125 2.625h1.5m-1.5 0A1.125 1.125 0 0118 7.125v-1.5m1.125 2.625c-.621 0-1.125.504-1.125 1.125v1.5m2.625-2.625c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125M18 5.625v5.25M7.125 12h9.75m-9.75 0A1.125 1.125 0 016 10.875M7.125 12C6.504 12 6 12.504 6 13.125m0-2.25C6 11.496 5.496 12 4.875 12M18 10.875c0 .621-.504 1.125-1.125 1.125M18 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m-12 5.25v-5.25m0 5.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125m-12 0v-1.5c0-.621-.504-1.125-1.125-1.125M18 18.375v-5.25m0 5.25v-1.5c0-.621.504-1.125 1.125-1.125M18 13.125v1.5c0 .621.504 1.125 1.125 1.125M18 13.125c0-.621.504-1.125 1.125-1.125M6 13.125v1.5c0 .621-.504 1.125-1.125 1.125M6 13.125C6 12.504 5.496 12 4.875 12m-1.5 0h1.5m-1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M19.125 12h1.5m0 0c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h1.5m14.25 0h1.5"/>
+                                </svg>
+                                <p class="user-movies_text text-gray-700">{{ $questionnaire['movies'] }}</p>
+                            </div>
+                        @endif
 
-                    A delectus eaque enim facere molestiae praesentium quidem recusandae velit vero voluptas?
-                    Consequatur corporis culpa cum cumque delectus dicta dignissimos eaque eius hic iusto mollitia
-                    odio placeat quae, tempora voluptatibus?
-
-                    Accusamus, repellendus, veniam! A beatae dicta distinctio eaque eligendi esse expedita in
-                    incidunt magni modi mollitia odit quibusdam similique, ullam ut, vitae voluptatem! Autem
-                    consequuntur doloremque facere, nisi sed tempore!
+                        @if(!empty($questionnaire['books']))
+                            <div class="user-books space-x-2 flex">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/>
+                                </svg>
+                                <p class="user-books_text text-gray-700">{{ $questionnaire['books'] }}</p>
+                            </div>
+                        @endif
+                    @endif
                 </div>
             </div>
         </div>
@@ -111,25 +137,167 @@
         <div data-style-type="1" class="card-style absolute opacity-40 cursor-pointer bg-gradient-to-t from-[#F9DED5] to-[#F5F1EA] hover:from-[#F5F1EA] hover:to-[#F9DED5] hover:opacity-90 h-24 w-5 text-center text-sm rounded-r-2xl -right-5 top-[40%] shadow-md [writing-mode:vertical-lr] font-semibold">
             About me
         </div>
+
         <div class="actions rounded-b-xl absolute w-full bottom-0 h-[15%] bg-gradient-to-t from-fuchsia-50/90 to-[#F9DED5]/10 bg-opacity-10">
             <div class="w-2/3 h-full mx-auto flex items-center justify-around">
                 <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-16 h-16 fill-[#ff3347]">
-                        <path class="cursor-pointer hover:fill-red-600" fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z" clip-rule="evenodd"/>
+                    <svg onclick="actionQuestionnaire(this, 'dislike')" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="action w-16 h-16 fill-[#ff3347] cursor-pointer hover:fill-red-600 filter drop-shadow-red-1 hover:drop-shadow-red-2">
+                        <path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z" clip-rule="evenodd"/>
                     </svg>
                 </div>
                 <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-16 h-16 fill-blue-400">
-                        <path class="cursor-pointer hover:fill-blue-500" fill-rule="evenodd" d="M4.804 21.644A6.707 6.707 0 006 21.75a6.721 6.721 0 003.583-1.029c.774.182 1.584.279 2.417.279 5.322 0 9.75-3.97 9.75-9 0-5.03-4.428-9-9.75-9s-9.75 3.97-9.75 9c0 2.409 1.025 4.587 2.674 6.192.232.226.277.428.254.543a3.73 3.73 0 01-.814 1.686.75.75 0 00.44 1.223zM8.25 10.875a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25zM10.875 12a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0zm4.875-1.125a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25z" clip-rule="evenodd"/>
+                    <svg onclick="actionQuestionnaireMessage(this)" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="action w-16 h-16 fill-blue-400 cursor-pointer hover:fill-blue-500 filter drop-shadow-blue-1 hover:drop-shadow-blue-2">
+                        <path fill-rule="evenodd" d="M4.804 21.644A6.707 6.707 0 006 21.75a6.721 6.721 0 003.583-1.029c.774.182 1.584.279 2.417.279 5.322 0 9.75-3.97 9.75-9 0-5.03-4.428-9-9.75-9s-9.75 3.97-9.75 9c0 2.409 1.025 4.587 2.674 6.192.232.226.277.428.254.543a3.73 3.73 0 01-.814 1.686.75.75 0 00.44 1.223zM8.25 10.875a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25zM10.875 12a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0zm4.875-1.125a1.125 1.125 0 100 2.25 1.125 1.125 0 000-2.25z" clip-rule="evenodd"/>
                     </svg>
                 </div>
                 <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-16 h-16 fill-pink-400">
-                        <path class="cursor-pointer hover:fill-pink-500" d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z"/>
+                    <svg onclick="actionQuestionnaire(this, 'like')" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="action w-16 h-16 fill-pink-400 cursor-pointer hover:fill-pink-500 filter drop-shadow-pink-1 hover:drop-shadow-pink-2">
+                        <path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z"/>
                     </svg>
                 </div>
             </div>
         </div>
     </div>
     @vite('resources/js/card.js')
+    <script>
+        let titleBooksMovies = $('<p class="user-movies-and-books_title text-xl font-semibold"></p>');
+        let divBooks = $('<div class="user-books space-x-2 flex"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg></div>');
+        let pTextBooks = $('<p class="user-books_text text-gray-700"></p>');
+        let divMovies = $('<div class="user-movies space-x-2 flex"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h1.5C5.496 19.5 6 18.996 6 18.375m-3.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-1.5A1.125 1.125 0 0118 18.375M20.625 4.5H3.375m17.25 0c.621 0 1.125.504 1.125 1.125M20.625 4.5h-1.5C18.504 4.5 18 5.004 18 5.625m3.75 0v1.5c0 .621-.504 1.125-1.125 1.125M3.375 4.5c-.621 0-1.125.504-1.125 1.125M3.375 4.5h1.5C5.496 4.5 6 5.004 6 5.625m-3.75 0v1.5c0 .621.504 1.125 1.125 1.125m0 0h1.5m-1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m1.5-3.75C5.496 8.25 6 7.746 6 7.125v-1.5M4.875 8.25C5.496 8.25 6 8.754 6 9.375v1.5m0-5.25v5.25m0-5.25C6 5.004 6.504 4.5 7.125 4.5h9.75c.621 0 1.125.504 1.125 1.125m1.125 2.625h1.5m-1.5 0A1.125 1.125 0 0118 7.125v-1.5m1.125 2.625c-.621 0-1.125.504-1.125 1.125v1.5m2.625-2.625c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125M18 5.625v5.25M7.125 12h9.75m-9.75 0A1.125 1.125 0 016 10.875M7.125 12C6.504 12 6 12.504 6 13.125m0-2.25C6 11.496 5.496 12 4.875 12M18 10.875c0 .621-.504 1.125-1.125 1.125M18 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m-12 5.25v-5.25m0 5.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125m-12 0v-1.5c0-.621-.504-1.125-1.125-1.125M18 18.375v-5.25m0 5.25v-1.5c0-.621.504-1.125 1.125-1.125M18 13.125v1.5c0 .621.504 1.125 1.125 1.125M18 13.125c0-.621.504-1.125 1.125-1.125M6 13.125v1.5c0 .621-.504 1.125-1.125 1.125M6 13.125C6 12.504 5.496 12 4.875 12m-1.5 0h1.5m-1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M19.125 12h1.5m0 0c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h1.5m14.25 0h1.5"/></svg></div>');
+        let pTextMovies = $('<p class="user-movies_text text-gray-700"></p>');
+
+        let divInterestItem = '<div class="interest-item flex items-center border-2 border-orange-400/60 rounded-2xl py-0.5 px-2 my-0.5 mx-1 bg-gradient-to-r from-orange-300/60 to-pink-500/40"><div class="mr-1"><span class="user-interests_item_icon font-normal text-xl">INTEREST_ICON</span></div> <p class="user-interests_item_word">INTEREST_WORD</p></div>';
+        let divMusicItem = '<div class="music-item flex items-center border-2 border-orange-400/60 rounded-2xl py-0.5 px-2 my-0.5 mx-1 bg-gradient-to-r from-orange-300/60 to-pink-500/40"><p class="user-music_item_text">MUSIC_WORD</p></div>';
+
+        {{--let divAvatarItem = '<div class="absolute inset-0 transition-transform transform AVATAR_INDEX" data-carousel-item="AVATAR_ACTIVE"><img src="{{ asset('storage/avatars/') }}AVATAR_NAME" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"></div>';--}}
+        let divAvatarItem = '<div id="carousel-item-CARUS_ID"><img src="{{ asset('storage/avatars/') }}AVATAR_NAME" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"></div>';
+        let divIndicatorItem = '<button id="carousel-indicator-CARUS_ID" type="button" class="w-3 h-3 rounded-full" aria-current="true""></button>';
+
+
+        function actionQuestionnaire(elem, action, message = null) {
+
+            if ($(elem).hasClass('disabled')) {
+                console.log('lol')
+                return;
+            }
+
+            $('.action').addClass('disabled');
+
+            $.ajax({
+                url: '{{ route('questionnaires.action-questionnaire') }}',
+                method: 'POST',
+                data: {
+                    '_token': '{{ csrf_token() }}',
+                    'action': action,
+                    'message': message
+                },
+                success: function (response) {
+                    $('.action').removeClass('disabled');
+                    console.log(response)
+
+                    renderQuestionnaire(response)
+                },
+                error: function (response) {
+                    let errors = response.responseJSON.errors;
+
+                    $.each(errors, function (key, message) {
+                        if (key === 'message') {
+                            $('.action').removeClass('disabled');
+                        }
+
+                        alertError(message)
+                    })
+                }
+            })
+        }
+
+        function actionQuestionnaireMessage() {
+
+            let message = '';
+
+            actionQuestionnaire('message', message)
+        }
+
+        function renderQuestionnaire(questionnaire) {
+            $('.user-interests_items').empty();
+            $('.user-music_items').empty();
+            $('.user-avatars-items').empty();
+            $('.carousel-indicator').empty();
+
+            $('.user-name').text(questionnaire.name + ', ' + questionnaire.date_birth);
+            $('.user-about_text').text(questionnaire.about);
+
+            let items = [];
+            let optionItems = [];
+
+            $.each(questionnaire.avatars, function (key, imgName) {
+                // $('.user-avatars-items').append(divAvatarItem.replace('AVATAR_INDEX', (key !== 0 ? 'z-10 translate-x-full' : 'translate-x-0 z-20' )).replace('AVATAR_ACTIVE', (key !== 0 ? '1' : 'active')).replace('AVATAR_NAME', '/' + imgName))
+                $('.user-avatars-items').append(divAvatarItem.replace('CARUS_ID', (key + 1 )).replace('AVATAR_NAME', '/' + imgName));
+                $('.carousel-indicator').append(divIndicatorItem.replace('CARUS_ID', (key + 1 )));
+                // items[key] = { position: key, el: divAvatarItem.replace('AVATAR_INDEX', (key !== 0 ? 'z-10 translate-x-full' : 'translate-x-0 z-20' )).replace('AVATAR_ACTIVE', (key !== 0 ? '1' : 'active')).replace('AVATAR_NAME', '/' + imgName)}
+                items[key] = { position: key, el: $('#carousel-item-' + (key + 1)).get(0) }
+                optionItems[key] = { position: key, el: $('#carousel-indicator-' + (key + 1)).get(0) }
+            })
+
+            console.log(items)
+
+            const options = {
+                defaultPosition: 1,
+                interval: 3000,
+                indicators: {
+                    activeClasses: 'bg-white dark:bg-gray-800',
+                    inactiveClasses: 'bg-white/50 dark:bg-gray-800/50 hover:bg-white dark:hover:bg-gray-800',
+                    items: optionItems
+                },
+            };
+
+            const carousel = new Carousel(items, options);
+
+            console.log(carousel)
+
+            if (typeof questionnaire.education !== 'undefined' && questionnaire.education !== null) {
+                $('.user-education_text').text(questionnaire.education);
+                $('.user-education').removeClass('hidden');
+            } else {
+                $('.user-education').addClass('hidden');
+            }
+
+            if (typeof questionnaire.job !== 'undefined' && questionnaire.job !== null) {
+                $('.user-job_text').text(questionnaire.job);
+                $('.user-job').removeClass('hidden');
+            } else {
+                $('.user-job').addClass('hidden');
+            }
+
+            if ((typeof questionnaire.movies !== 'undefined' && questionnaire.movies !== null) && (typeof questionnaire.books !== 'undefined' && questionnaire.books !== null)) {
+                $('.user-movies-and-books').empty().append(titleBooksMovies.text('Movies and books')).append(divMovies.append(pTextMovies.text(questionnaire.movies))).append(divBooks.append(pTextBooks.text(questionnaire.books)));
+            } else if (typeof questionnaire.movies !== 'undefined' && questionnaire.movies !== null) {
+                $('.user-movies-and-books').empty().append(titleBooksMovies.text('Movies')).append(divMovies.append(pTextMovies.text(questionnaire.movies)));
+            } else if (typeof questionnaire.books !== 'undefined' && questionnaire.books !== null) {
+                $('.user-movies-and-books').empty().append(titleBooksMovies.text('Books')).append(divBooks.append(pTextBooks.text(questionnaire.books)));
+            } else {
+                $('.user-movies-and-books').empty()
+            }
+
+            if (typeof questionnaire.interests !== 'undefined' && questionnaire.interests !== null && questionnaire.interests.length !== 0) {
+                $.each(questionnaire.interests, function (word, icon) {
+                    $('.user-interests_items').append(divInterestItem.replace('INTEREST_ICON', icon).replace('INTEREST_WORD', word))
+                })
+
+                $('.user-interests').removeClass('hidden');
+            } else {
+                $('.user-interests').addClass('hidden');
+            }
+
+            if (typeof questionnaire.music !== 'undefined' && questionnaire.music !== null && questionnaire.music.length !== 0) {
+                $.each(questionnaire.music, function (key, word) {
+                    $('.user-music_items').append(divMusicItem.replace('MUSIC_WORD', word))
+                })
+
+                $('.user-music').removeClass('hidden');
+            } else {
+                $('.user-music').addClass('hidden');
+            }
+        }
+    </script>
 @endsection

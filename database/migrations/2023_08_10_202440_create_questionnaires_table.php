@@ -9,10 +9,10 @@ return new class extends Migration
 
     public function up(): void
     {
-        Schema::create('packed_profiles', function (Blueprint $table) {
+        Schema::create('questionnaires', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->longText('profile_json');
+            $table->longText('questionnaire_json');
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
@@ -21,6 +21,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('packed_profiles');
+        Schema::dropIfExists('questionnaires');
     }
 };

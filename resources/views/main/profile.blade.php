@@ -48,14 +48,14 @@
                 <div class="user-information w-[95%] mx-auto space-y-4 pb-20">
                     <div class="space-y-2">
                         <div class="name text-3xl font-bold">{{ $user['profile']->name . ', ' . \Carbon\Carbon::parse($user['profile']->date_birth)->age }}</div>
-                        <div class="education text-lg flex space-x-2">
+                        <div class="education text-lg flex space-x-2 @if(empty($user['profile']->education)) hidden @endif">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z"/>
                             </svg>
 
                             <p class="text-gray-700">{{ $user['profile']->education }}</p>
                         </div>
-                        <div class="job text-lg flex space-x-2">
+                        <div class="job text-lg flex space-x-2 @if(empty($user['profile']->job)) hidden @endif">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z"/>
                             </svg>
@@ -137,7 +137,7 @@
             </div>
         @else
             <div class="w-full h-full flex-justify-items-center flex-col">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-36 h-36 stroke-0.5 stroke-pink-600 filter drop-shadow-pink">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-36 h-36 stroke-0.5 stroke-pink-600 filter drop-shadow-pink-1">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"></path>
                 </svg>
                 <button class="create-profile relative inline-flex items-center justify-center p-1 mb-3 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800">
@@ -150,12 +150,16 @@
     </div>
     @vite('resources/js/card.js')
     <script>
-        $('.profile-edit').click(function (){
-            $(location).attr('href','{{ route('profile.edit') }}')
-        })
+        $(document).ready(function (){
+            $('.profile-edit').click(function (){
+                $(location).attr('href','{{ route('profile.edit') }}')
+            })
 
-        $('.create-profile').click(function (){
-            $(location).attr('href','{{ route('profile.edit') }}')
-        })
+            $('.create-profile').click(function (){
+                $(location).attr('href','{{ route('profile.edit') }}')
+            })
+
+            @error('info') alertInfo('{{ $message }}') @enderror
+        });
     </script>
 @endsection

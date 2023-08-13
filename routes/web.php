@@ -21,7 +21,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware(['auth', 'verified.phone'])->group(function () {
-    Route::get('/', [QuestionnairesController::class, 'index'])->name('questionnaires');
+
+    Route::middleware(['verified.profile'])->group(function () {
+        Route::get('/', [QuestionnairesController::class, 'index'])->name('questionnaires');
+        Route::post('/action_questionnaire', [QuestionnairesController::class, 'actionQuestionnaire'])->name('questionnaires.action-questionnaire');
+    });
 
     Route::post('/upload_avatar', [ProfileController::class, 'uploadAvatar'])->name('profile.avatar-upload');
     Route::delete('/delete_avatar', [ImageController::class, 'deleteAvatar'])->name('image.avatar-delete');

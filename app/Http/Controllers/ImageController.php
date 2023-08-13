@@ -17,7 +17,7 @@ class ImageController extends Controller
 
         Storage::putFileAs('public/avatars', $imageFile, $imageName);
 
-        Avatar::create(['user_id' => '1', 'image_name' => $imageName, 'confirmed' => 0]);
+        Avatar::create(['user_id' => auth()->user()->id, 'image_name' => $imageName, 'confirmed' => 0]);
 
         return $imageName;
     }

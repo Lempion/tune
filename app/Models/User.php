@@ -73,6 +73,16 @@ class User extends Authenticatable
         return compact('profile','avatars','music','interests');
     }
 
+    public function questionnaires()
+    {
+        return $this->hasMany(Questionnaire::class);
+    }
+
+    public function getLastQuestionnaireAttribute()
+    {
+
+    }
+
     public function hasVerifiedPhone(): bool
     {
         return !is_null($this->phone_verified_at);

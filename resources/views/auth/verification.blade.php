@@ -150,17 +150,6 @@
                 }, 1000)
             }
 
-            function alertError(message) {
-                Swal.fire({
-                    position: 'top-end',
-                    icon: 'error',
-                    title: message,
-                    showConfirmButton: false,
-                    backdrop: `rgba(0, 0, 0, 0)`,
-                    timer: 2500
-                })
-            }
-
             @error('verif_phone') alertError('{{ $message }}') @enderror
         })
 
