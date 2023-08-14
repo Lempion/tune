@@ -40,6 +40,43 @@
                 title: message
             })
         }
+
+        function renderSlider() {
+            let carouselItem = $('.carousel-item');
+            let carouselIndicator = $('.carousel-indicator');
+
+            let items = [];
+            let optionItems = [];
+
+            $.each(carouselItem, function (key, value) {
+                items[key] = {position: key, el: value}
+            });
+
+            $.each(carouselIndicator, function (key, value) {
+                optionItems[key] = {position: key, el: value}
+            });
+
+            const options = {
+                defaultPosition: 1,
+                interval: 3000,
+                indicators: {
+                    activeClasses: 'bg-white dark:bg-gray-800',
+                    inactiveClasses: 'bg-white/50 dark:bg-gray-800/50 hover:bg-white dark:hover:bg-gray-800',
+                    items: optionItems
+                },
+            };
+
+            const carousel = new Carousel(items, options);
+
+            carousel.slideTo(0)
+
+            $('#data-carousel-prev').click(function () {
+                carousel.prev();
+            })
+            $('#data-carousel-next').click(function () {
+                carousel.next();
+            })
+        }
     </script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>

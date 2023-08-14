@@ -10,22 +10,21 @@
 
     <div class="card app-card-wrapper rounded-xl transition-all duration-200 opacity-100">
         <div class="app-card-container rounded-t-xl cursor-default">
-            <div id="indicators-carousel" class="relative w-full overflow-hidden" data-carousel="static">
-                <!-- Carousel wrapper -->
-                <div class="user-avatars-items relative h-56  rounded-lg md:h-96">
-                    @foreach($questionnaire['avatars'] as $avatar)
-                        <div class="hidden" data-carousel-item="{{ !$loop->first ?: 'active' }}">
-                            <img src="{{ asset('storage/avatars/' . $avatar) }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+            <div class="carousel relative w-full">
+                <div class="user-avatars-items relative h-56 overflow-hidden rounded-lg sm:h-64 xl:h-80 2xl:h-96">
+                    @foreach($questionnaire['avatars'] as $key => $avatar)
+                        <div id="carousel-item-{{ $key + 1 }}" class="carousel-item hidden duration-700 ease-in-out">
+                            <img src="{{ asset('storage/avatars/' . $avatar) }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
                         </div>
                     @endforeach
                 </div>
-                <!-- Slider indicators -->
-                <div class="carousel-indicator absolute z-30 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
+
+                <div class="user-carousel-indicator absolute z-30 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
                     @for($i = 0; $i < count($questionnaire['avatars']); $i++)
-                        <button type="button" class="w-3 h-3 rounded-full" aria-current="{{ $i === 0 }}" data-carousel-slide-to="{{ $i }}"></button>
+                        <button id="carousel-indicator-{{ $i + 1 }}" type="button" class="carousel-indicator w-3 h-3 rounded-full" aria-current="{{ $i === 0 }}" aria-label="Slide {{ $i + 1 }}"></button>
                     @endfor
                 </div>
-                <!-- Slider controls -->
+
                 <button id="data-carousel-prev" type="button" class="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none">
                     <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
                         <svg class="w-4 h-4 text-white dark:text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
@@ -160,24 +159,25 @@
     </div>
     @vite('resources/js/card.js')
     <script>
+
         let titleBooksMovies = $('<p class="user-movies-and-books_title text-xl font-semibold"></p>');
-        let divBooks = $('<div class="user-books space-x-2 flex"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg></div>');
-        let pTextBooks = $('<p class="user-books_text text-gray-700"></p>');
-        let divMovies = $('<div class="user-movies space-x-2 flex"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h1.5C5.496 19.5 6 18.996 6 18.375m-3.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-1.5A1.125 1.125 0 0118 18.375M20.625 4.5H3.375m17.25 0c.621 0 1.125.504 1.125 1.125M20.625 4.5h-1.5C18.504 4.5 18 5.004 18 5.625m3.75 0v1.5c0 .621-.504 1.125-1.125 1.125M3.375 4.5c-.621 0-1.125.504-1.125 1.125M3.375 4.5h1.5C5.496 4.5 6 5.004 6 5.625m-3.75 0v1.5c0 .621.504 1.125 1.125 1.125m0 0h1.5m-1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m1.5-3.75C5.496 8.25 6 7.746 6 7.125v-1.5M4.875 8.25C5.496 8.25 6 8.754 6 9.375v1.5m0-5.25v5.25m0-5.25C6 5.004 6.504 4.5 7.125 4.5h9.75c.621 0 1.125.504 1.125 1.125m1.125 2.625h1.5m-1.5 0A1.125 1.125 0 0118 7.125v-1.5m1.125 2.625c-.621 0-1.125.504-1.125 1.125v1.5m2.625-2.625c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125M18 5.625v5.25M7.125 12h9.75m-9.75 0A1.125 1.125 0 016 10.875M7.125 12C6.504 12 6 12.504 6 13.125m0-2.25C6 11.496 5.496 12 4.875 12M18 10.875c0 .621-.504 1.125-1.125 1.125M18 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m-12 5.25v-5.25m0 5.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125m-12 0v-1.5c0-.621-.504-1.125-1.125-1.125M18 18.375v-5.25m0 5.25v-1.5c0-.621.504-1.125 1.125-1.125M18 13.125v1.5c0 .621.504 1.125 1.125 1.125M18 13.125c0-.621.504-1.125 1.125-1.125M6 13.125v1.5c0 .621-.504 1.125-1.125 1.125M6 13.125C6 12.504 5.496 12 4.875 12m-1.5 0h1.5m-1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M19.125 12h1.5m0 0c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h1.5m14.25 0h1.5"/></svg></div>');
-        let pTextMovies = $('<p class="user-movies_text text-gray-700"></p>');
+        let divBooks = '<div class="user-books space-x-2 flex"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg><p class="user-books_text text-gray-700">TEXT_BOOKS</p></div>';
+        let divMovies = '<div class="user-movies space-x-2 flex"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h1.5C5.496 19.5 6 18.996 6 18.375m-3.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-1.5A1.125 1.125 0 0118 18.375M20.625 4.5H3.375m17.25 0c.621 0 1.125.504 1.125 1.125M20.625 4.5h-1.5C18.504 4.5 18 5.004 18 5.625m3.75 0v1.5c0 .621-.504 1.125-1.125 1.125M3.375 4.5c-.621 0-1.125.504-1.125 1.125M3.375 4.5h1.5C5.496 4.5 6 5.004 6 5.625m-3.75 0v1.5c0 .621.504 1.125 1.125 1.125m0 0h1.5m-1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m1.5-3.75C5.496 8.25 6 7.746 6 7.125v-1.5M4.875 8.25C5.496 8.25 6 8.754 6 9.375v1.5m0-5.25v5.25m0-5.25C6 5.004 6.504 4.5 7.125 4.5h9.75c.621 0 1.125.504 1.125 1.125m1.125 2.625h1.5m-1.5 0A1.125 1.125 0 0118 7.125v-1.5m1.125 2.625c-.621 0-1.125.504-1.125 1.125v1.5m2.625-2.625c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125M18 5.625v5.25M7.125 12h9.75m-9.75 0A1.125 1.125 0 016 10.875M7.125 12C6.504 12 6 12.504 6 13.125m0-2.25C6 11.496 5.496 12 4.875 12M18 10.875c0 .621-.504 1.125-1.125 1.125M18 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m-12 5.25v-5.25m0 5.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125m-12 0v-1.5c0-.621-.504-1.125-1.125-1.125M18 18.375v-5.25m0 5.25v-1.5c0-.621.504-1.125 1.125-1.125M18 13.125v1.5c0 .621.504 1.125 1.125 1.125M18 13.125c0-.621.504-1.125 1.125-1.125M6 13.125v1.5c0 .621-.504 1.125-1.125 1.125M6 13.125C6 12.504 5.496 12 4.875 12m-1.5 0h1.5m-1.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M19.125 12h1.5m0 0c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h1.5m14.25 0h1.5"/></svg><p class="user-movies_text text-gray-700">TEXT_MOVIES</p></div>';
 
         let divInterestItem = '<div class="interest-item flex items-center border-2 border-orange-400/60 rounded-2xl py-0.5 px-2 my-0.5 mx-1 bg-gradient-to-r from-orange-300/60 to-pink-500/40"><div class="mr-1"><span class="user-interests_item_icon font-normal text-xl">INTEREST_ICON</span></div> <p class="user-interests_item_word">INTEREST_WORD</p></div>';
         let divMusicItem = '<div class="music-item flex items-center border-2 border-orange-400/60 rounded-2xl py-0.5 px-2 my-0.5 mx-1 bg-gradient-to-r from-orange-300/60 to-pink-500/40"><p class="user-music_item_text">MUSIC_WORD</p></div>';
 
-        {{--let divAvatarItem = '<div class="absolute inset-0 transition-transform transform AVATAR_INDEX" data-carousel-item="AVATAR_ACTIVE"><img src="{{ asset('storage/avatars/') }}AVATAR_NAME" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"></div>';--}}
-        let divAvatarItem = '<div id="carousel-item-CARUS_ID"><img src="{{ asset('storage/avatars/') }}AVATAR_NAME" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"></div>';
-        let divIndicatorItem = '<button id="carousel-indicator-CARUS_ID" type="button" class="w-3 h-3 rounded-full" aria-current="true""></button>';
+        let divAvatarItem = '<div id="carousel-item-ITEM_NUM" class="carousel-item hidden duration-700 ease-in-out"> <img src="{{ asset('storage/avatars/') }}AVATAR_NAME" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..."> </div>';
+        let divIndicatorItem = '<button id="carousel-indicator-ITEM_NUM" type="button" class="carousel-indicator w-3 h-3 rounded-full" aria-current="INDICATOR_CURRENT" aria-label="Slide ITEM_NUM"></button>';
 
+        $(document).ready(function () {
+            renderSlider();
+        })
 
         function actionQuestionnaire(elem, action, message = null) {
 
             if ($(elem).hasClass('disabled')) {
-                console.log('lol')
+                alertError('Action prohibited')
                 return;
             }
 
@@ -193,8 +193,6 @@
                 },
                 success: function (response) {
                     $('.action').removeClass('disabled');
-                    console.log(response)
-
                     renderQuestionnaire(response)
                 },
                 error: function (response) {
@@ -222,38 +220,17 @@
             $('.user-interests_items').empty();
             $('.user-music_items').empty();
             $('.user-avatars-items').empty();
-            $('.carousel-indicator').empty();
+            $('.user-carousel-indicator').empty();
 
             $('.user-name').text(questionnaire.name + ', ' + questionnaire.date_birth);
             $('.user-about_text').text(questionnaire.about);
 
-            let items = [];
-            let optionItems = [];
-
             $.each(questionnaire.avatars, function (key, imgName) {
-                // $('.user-avatars-items').append(divAvatarItem.replace('AVATAR_INDEX', (key !== 0 ? 'z-10 translate-x-full' : 'translate-x-0 z-20' )).replace('AVATAR_ACTIVE', (key !== 0 ? '1' : 'active')).replace('AVATAR_NAME', '/' + imgName))
-                $('.user-avatars-items').append(divAvatarItem.replace('CARUS_ID', (key + 1 )).replace('AVATAR_NAME', '/' + imgName));
-                $('.carousel-indicator').append(divIndicatorItem.replace('CARUS_ID', (key + 1 )));
-                // items[key] = { position: key, el: divAvatarItem.replace('AVATAR_INDEX', (key !== 0 ? 'z-10 translate-x-full' : 'translate-x-0 z-20' )).replace('AVATAR_ACTIVE', (key !== 0 ? '1' : 'active')).replace('AVATAR_NAME', '/' + imgName)}
-                items[key] = { position: key, el: $('#carousel-item-' + (key + 1)).get(0) }
-                optionItems[key] = { position: key, el: $('#carousel-indicator-' + (key + 1)).get(0) }
+                $('.user-avatars-items').append(divAvatarItem.replace('ITEM_NUM', (key + 1)).replace('AVATAR_NAME', '/' + imgName));
+                $('.user-carousel-indicator').append(divIndicatorItem.replace('ITEM_NUM', (key + 1)).replace('INDICATOR_CURRENT', (key === 0)).replace('ITEM_NUM', (key + 1)));
             })
 
-            console.log(items)
-
-            const options = {
-                defaultPosition: 1,
-                interval: 3000,
-                indicators: {
-                    activeClasses: 'bg-white dark:bg-gray-800',
-                    inactiveClasses: 'bg-white/50 dark:bg-gray-800/50 hover:bg-white dark:hover:bg-gray-800',
-                    items: optionItems
-                },
-            };
-
-            const carousel = new Carousel(items, options);
-
-            console.log(carousel)
+            renderSlider();
 
             if (typeof questionnaire.education !== 'undefined' && questionnaire.education !== null) {
                 $('.user-education_text').text(questionnaire.education);
@@ -270,11 +247,11 @@
             }
 
             if ((typeof questionnaire.movies !== 'undefined' && questionnaire.movies !== null) && (typeof questionnaire.books !== 'undefined' && questionnaire.books !== null)) {
-                $('.user-movies-and-books').empty().append(titleBooksMovies.text('Movies and books')).append(divMovies.append(pTextMovies.text(questionnaire.movies))).append(divBooks.append(pTextBooks.text(questionnaire.books)));
+                $('.user-movies-and-books').empty().append(titleBooksMovies.text('Movies and books')).append(divMovies.replace('TEXT_MOVIES', questionnaire.movies)).append(divBooks.replace('TEXT_BOOKS', questionnaire.books));
             } else if (typeof questionnaire.movies !== 'undefined' && questionnaire.movies !== null) {
-                $('.user-movies-and-books').empty().append(titleBooksMovies.text('Movies')).append(divMovies.append(pTextMovies.text(questionnaire.movies)));
+                $('.user-movies-and-books').empty().append(titleBooksMovies.text('Movies')).append(divMovies.replace('TEXT_MOVIES', questionnaire.movies));
             } else if (typeof questionnaire.books !== 'undefined' && questionnaire.books !== null) {
-                $('.user-movies-and-books').empty().append(titleBooksMovies.text('Books')).append(divBooks.append(pTextBooks.text(questionnaire.books)));
+                $('.user-movies-and-books').empty().append(titleBooksMovies.text('Books')).append(divBooks.replace('TEXT_BOOKS', questionnaire.books));
             } else {
                 $('.user-movies-and-books').empty()
             }

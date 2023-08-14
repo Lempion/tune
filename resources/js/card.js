@@ -21,7 +21,7 @@ $(document).ready(function () {
 
                 $('.card').removeClass('flex-justify-items-center rounded-l-lg').addClass('rounded-xl');
                 $('.card .app-card-container').removeClass('flex-justify-items-center').after($('.card-style').text('About me')).after($('.profile-edit'));
-                $('#indicators-carousel').after($('.user-information').removeClass('pt-5'));
+                $('.carousel').after($('.user-information').removeClass('pt-5'));
                 $('.actions').removeClass('rounded-bl-lg').addClass('rounded-b-xl');
                 $('.card-plus').remove();
             }

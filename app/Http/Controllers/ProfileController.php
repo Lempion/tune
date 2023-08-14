@@ -8,13 +8,11 @@ use App\Models\Interest;
 use App\Models\Music;
 use App\Models\PackedProfile;
 use App\Models\Profile;
-use App\Models\UserData;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
-use function PHPUnit\Framework\isNull;
 
 class ProfileController extends Controller
 {
@@ -22,6 +20,8 @@ class ProfileController extends Controller
     public function index(): View
     {
         $user = Auth::user()->information;
+
+        $user['profile']->date_birth = Carbon::parse($user['profile']->date_birth)->age;
 
         return view('main.profile', compact('user'));
     }
