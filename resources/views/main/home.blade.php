@@ -9,8 +9,6 @@
     </div>
 
     <div class="app-card-wrapper w-full h-full flex-justify-items-center rounded-xl">
-
-
         <div class="letter-form w-full h-full bg-gray-700/50 -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 z-50 flex-justify-items-center rounded-xl absolute !hidden">
             <div class="form-questionnaire-message bg-gradient-to-r from-[#F9DED5] to-[#F5F1EA] w-[95%] h-72 rounded-md relative">
                 <div class="h-2/6 flex-justify-items-center flex-col py-2">
@@ -33,6 +31,8 @@
                 </div>
             </div>
         </div>
+
+        <div class="active-ping absolute w-1/2 h-1/2 inline-flex bg-green-400 opacity-75 z-40 hidden"></div>
 
         <div class="card-main relative transition-all duration-200 opacity-100 w-full h-full">
             @if(!empty($questionnaire))
@@ -135,7 +135,9 @@
                                         Movies and books
                                     @elseif(!empty($questionnaire['movies']))
                                         Movies
-                                    @elseif(!empty($questionnaire['books'])) Books @endif
+                                    @elseif(!empty($questionnaire['books']))
+                                        Books
+                                    @endif
                         </p>
 
                                 @if(!empty($questionnaire['movies']))
@@ -164,7 +166,7 @@
                     About me
                 </div>
 
-                <div class="actions rounded-b-xl absolute w-full bottom-0 h-[15%] bg-gradient-to-t from-fuchsia-50/90 to-[#F9DED5]/10 bg-opacity-10">
+                <div class="actions rounded-b-xl absolute w-full bottom-0 h-[15%] bg-gradient-to-t from-fuchsia-50/90 to-[#F9DED5]/10 bg-opacity-10 z-[51]">
                     <div class="w-2/3 h-full mx-auto flex items-center justify-around">
                         <div>
                             <svg onclick="actionQuestionnaire(this, 'dislike')" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="action w-16 h-16 fill-[#ff3347] cursor-pointer hover:fill-red-600 filter drop-shadow-red-1 hover:drop-shadow-red-2">
@@ -248,7 +250,6 @@
             })
 
             $('.letter-form-close').click(function () {
-                console.log('12')
                 $('.letter-form').addClass('!hidden');
             })
 
@@ -271,6 +272,8 @@
 
             $('.action').addClass('disabled');
 
+            actionPing(action)
+
             $.ajax({
                 url: '{{ route('questionnaires.action-questionnaire') }}',
                 method: 'POST',
@@ -280,7 +283,6 @@
                     'message': message
                 },
                 success: function (response) {
-
                     $('.letter-message').val('');
                     $('.letter-form').addClass('!hidden')
 
@@ -289,13 +291,13 @@
                         return;
                     }
 
-                    $('.action').removeClass('disabled');
-
                     renderQuestionnaire(response.questionnaire)
 
                     if (response.message) {
                         alertMatch('You have a match! Look who it is')
                     }
+
+                    $('.action').removeClass('disabled');
                 },
                 error: function (response) {
                     let errors = response.responseJSON.errors;
@@ -370,6 +372,16 @@
             } else {
                 $('.user-music').addClass('hidden');
             }
+        }
+
+        function actionPing(action) {
+            let elemPing = $('.active-ping');
+
+            $(elemPing).addClass('animate-ping-one ' + (action === 'dislike' ? 'bg-red-400' : '')).removeClass('hidden');
+
+            $(elemPing).one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function () {
+                $(elemPing).removeClass('animate-ping-one bg-red-400').addClass('hidden');
+            })
         }
     </script>
 @endsection
