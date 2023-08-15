@@ -41,6 +41,24 @@
             })
         }
 
+        function alertMatch(message) {
+            Toast.fire({
+                title: message,
+                color: 'white',
+                timer: 36000,
+                showConfirmButton: true,
+                background: '!bg-orange-600',
+            })
+            $(".swal2-popup").addClass('!bg-gradient-to-r !from-indigo-500 !via-purple-500 !to-pink-500');
+            $(".swal2-title").addClass('!text-lg');
+            $(".swal2-actions").addClass('!justify-center');
+            $(".swal2-confirm").addClass('match-check !shadow-lg !bg-gradient-to-r !from-pink-500 !to-yellow-400 hover:!to-pink-500 hover:!from-yellow-400').text('Check').attr('onClick','matchCheck()');
+        }
+
+        function matchCheck() {
+            $(location).attr('href', '{{ route('questionnaires') }}')
+        }
+
         function renderSlider() {
             let carouselItem = $('.carousel-item');
             let carouselIndicator = $('.carousel-indicator');

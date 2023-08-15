@@ -58,6 +58,16 @@ class User extends Authenticatable
         return $this->hasMany(Avatar::class);
     }
 
+    public function likes(): HasMany
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    public function processedQuestionnaires(): HasMany
+    {
+        return $this->hasMany(ProcessedProfile::class);
+    }
+
     public function getApprovedAvatarsAttribute(): Collection
     {
         return $this->avatars()->where('confirmed', 1)->get();
@@ -70,7 +80,7 @@ class User extends Authenticatable
         $interests = $this->interests;
         $music = $this->music;
 
-        return compact('profile','avatars','music','interests');
+        return compact('profile', 'avatars', 'music', 'interests');
     }
 
     public function questionnaires()

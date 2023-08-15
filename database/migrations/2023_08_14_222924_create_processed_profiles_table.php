@@ -11,10 +11,10 @@ return new class extends Migration
 
     public function up(): void
     {
-        Schema::create('questionnaires', function (Blueprint $table) {
+        Schema::create('processed_profiles', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->longText('questionnaire_json');
+            $table->unsignedBigInteger('processed_questionnaire_id');
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
@@ -23,6 +23,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('questionnaires');
+        Schema::dropIfExists('processed_profiles');
     }
 };
