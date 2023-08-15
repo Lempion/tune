@@ -22,6 +22,10 @@
     @apply xl:w-[28%] lg:w-[40%] md:w-[45%] sm:w-[55%] h-4/6 shadow-xl bg-gradient-to-t from-[#F9DED5] to-[#F5F1EA] relative z-10 fixed;
 }
 
+.app-card-wrapper-plus {
+    @apply xl:w-[56%] lg:w-[80%] md:w-[90%] sm:w-[95%]
+}
+
 .app-card-container {
     @apply w-full h-full overflow-hidden overflow-y-visible questionnaire-scrollbar;
 }
