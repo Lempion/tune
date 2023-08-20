@@ -2,9 +2,9 @@
 
 use App\Http\Controllers\AuthorizationController;
 use App\Http\Controllers\ImageController;
-use App\Http\Controllers\MainController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\QuestionnairesController;
+use App\Http\Controllers\QuestionnaireController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\VerificationController;
 use Illuminate\Support\Facades\Route;
@@ -23,8 +23,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth', 'verified.phone'])->group(function () {
 
     Route::middleware(['verified.profile'])->group(function () {
-        Route::get('/', [QuestionnairesController::class, 'index'])->name('questionnaires');
-        Route::post('/action_questionnaire', [QuestionnairesController::class, 'actionQuestionnaire'])->name('questionnaires.action-questionnaire');
+        Route::get('/', [QuestionnaireController::class, 'index'])->name('questionnaires');
+        Route::post('/action_questionnaire', [QuestionnaireController::class, 'actionQuestionnaire'])->name('questionnaires.action-questionnaire');
+
+        Route::get('likes', [LikeController::class, 'index'])->name('likes');
+        Route::post('/get_likes_questionnaire', [LikeController::class, 'getLikesQuestionnaire'])->name('get-likes-questionnaire');
     });
 
     Route::post('/upload_avatar', [ProfileController::class, 'uploadAvatar'])->name('profile.avatar-upload');

@@ -21,7 +21,9 @@ class ProfileController extends Controller
     {
         $user = Auth::user()->information;
 
-        $user['profile']->date_birth = Carbon::parse($user['profile']->date_birth)->age;
+        if ($user['profile']){
+            $user['profile']->date_birth = Carbon::parse($user['profile']->date_birth)->age;
+        }
 
         return view('main.profile', compact('user'));
     }

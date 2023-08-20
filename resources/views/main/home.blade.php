@@ -131,14 +131,14 @@
                         <div class="user-movies-and-books space-y-1">
                             @if(!empty($questionnaire['movies']) || !empty($questionnaire['books']))
                                 <p class="user-movies-and-books_title text-xl font-semibold">
-                            @if(!empty($questionnaire['movies']) && !empty($questionnaire['books']))
+                                @if(!empty($questionnaire['movies']) && !empty($questionnaire['books']))
                                         Movies and books
                                     @elseif(!empty($questionnaire['movies']))
                                         Movies
                                     @elseif(!empty($questionnaire['books']))
                                         Books
                                     @endif
-                        </p>
+                                </p>
 
                                 @if(!empty($questionnaire['movies']))
                                     <div class="user-movies space-x-2 flex">

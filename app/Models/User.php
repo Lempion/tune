@@ -63,6 +63,16 @@ class User extends Authenticatable
         return $this->hasMany(Like::class);
     }
 
+    public function getLikedAttribute()
+    {
+        return Like::join('packed_profiles', 'likes.user_id', '=', 'packed_profiles.user_id')
+            ->select(['likes.user_id', 'likes.message', 'packed_profiles.profile_json'])
+            ->where('selected_user_id', auth()->id())
+            ->where('match', 0)
+            ->get()
+            ->toArray();
+    }
+
     public function processedQuestionnaires(): HasMany
     {
         return $this->hasMany(ProcessedProfile::class);

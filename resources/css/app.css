@@ -23,11 +23,23 @@
 }
 
 .app-card-wrapper-plus {
-    @apply xl:w-[56%] lg:w-[80%] md:w-[90%] sm:w-[95%]
+    @apply xl:w-[56%] lg:w-[80%] md:w-[90%] sm:w-[95%];
 }
 
 .app-card-container {
     @apply w-full h-full overflow-hidden overflow-y-visible questionnaire-scrollbar;
+}
+
+.app-likes-wrapper {
+    @apply xl:w-[56%] lg:w-[80%] md:w-[90%] sm:w-[95%] h-4/6 shadow-xl rounded-xl bg-gradient-to-t from-[#F9DED5] to-[#F5F1EA] relative z-10 fixed;
+}
+
+.app-card-likes-wrapper {
+    @apply w-1/3 h-3/6 rounded-md flex-justify-items-center;
+}
+
+.app-card-likes-container {
+    @apply w-4/6 h-5/6 shadow-xl rounded-md overflow-hidden bg-gradient-to-t from-[#F9DED5] to-[#F5F1EA] relative z-10 fixed;
 }
 
 .flex-justify-items-center {

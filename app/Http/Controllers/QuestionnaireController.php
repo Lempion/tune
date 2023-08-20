@@ -7,14 +7,15 @@ use App\Models\PackedProfile;
 use App\Models\ProcessedProfile;
 use App\Models\Questionnaire;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class QuestionnairesController extends Controller
+class QuestionnaireController extends Controller
 {
 
     public function index()
     {
-        if (!empty($questionnaire = $this->getLastQuestionnaire())){
+        if (!empty($questionnaire = $this->getLastQuestionnaire())) {
             $questionnaire_user_id = $questionnaire->pull('user_id');
 
             $questionnaire['date_birth'] = Carbon::parse($questionnaire['date_birth'])->age;
@@ -24,7 +25,7 @@ class QuestionnairesController extends Controller
             ->cookie('current_questionnaire', $questionnaire_user_id ?? null, '3600');
     }
 
-    public function actionQuestionnaire(Request $request)
+    public function actionQuestionnaire(Request $request): JsonResponse
     {
         if (!$currentQuestionnaireUserId = $request->cookie('current_questionnaire')) {
             return response()->json(['errors' => ['fatal' => 'Unknown error, please refresh the page.']], 422);
@@ -45,11 +46,11 @@ class QuestionnairesController extends Controller
                 $matchMessage = $this->activeLike($currentQuestionnaireUserId, $request->message ?? '');
                 break;
             case 'dislike':
-                $this->activeDislike();
+                $this->activeDislike($currentQuestionnaireUserId);
                 break;
         }
 
-        if (empty($questionnaire = $this->getLastQuestionnaire())){
+        if (empty($questionnaire = $this->getLastQuestionnaire())) {
             return response()->json(['questionnaire' => 'none', 'message' => $matchMessage ?? false]);
         }
 
@@ -62,7 +63,7 @@ class QuestionnairesController extends Controller
             ->cookie('current_questionnaire', $questionnaire_user_id, '3600');
     }
 
-    private function activeLike($selectedUserId, $message = '')
+    private function activeLike($selectedUserId, $message = ''): bool
     {
         $matchUser = Like::where('user_id', $selectedUserId)->where('selected_user_id', auth()->user()->id)->first();
 
@@ -79,9 +80,9 @@ class QuestionnairesController extends Controller
         return (isset($matchUser));
     }
 
-    private function activeDislike()
+    private function activeDislike($selectedUserId): void
     {
-
+        Like::where('user_id', $selectedUserId)->where('selected_user_id', auth()->id())->delete();
     }
 
     private function getLastQuestionnaire(): mixed
