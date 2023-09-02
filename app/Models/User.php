@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -63,14 +64,24 @@ class User extends Authenticatable
         return $this->hasMany(Like::class);
     }
 
-    public function getLikedAttribute()
+    public function getLikedAttribute(): array
     {
-        return Like::join('packed_profiles', 'likes.user_id', '=', 'packed_profiles.user_id')
+        $profilesLikedUsers = Like::join('packed_profiles', 'likes.user_id', '=', 'packed_profiles.user_id')
             ->select(['likes.user_id', 'likes.message', 'packed_profiles.profile_json'])
             ->where('selected_user_id', auth()->id())
             ->where('match', 0)
             ->get()
             ->toArray();
+
+        if (!empty($profilesLikedUsers)) {
+            foreach ($profilesLikedUsers as $key => $profileLikedUser) {
+                $profilesLikedUsers[$key] = array_merge($profileLikedUser, json_decode($profileLikedUser['profile_json'], true));
+                $profilesLikedUsers[$key]['date_birth'] = Carbon::parse($profilesLikedUsers[$key]['date_birth'])->age;
+                unset($profilesLikedUsers[$key]['profile_json']);
+            }
+        }
+
+        return $profilesLikedUsers;
     }
 
     public function processedQuestionnaires(): HasMany

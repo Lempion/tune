@@ -9,6 +9,7 @@ use App\Models\Questionnaire;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 
 class QuestionnaireController extends Controller
 {
@@ -17,10 +18,10 @@ class QuestionnaireController extends Controller
     {
         $questionnaires = $this->getNextQuestionnaire(true);
 
-        return response(view('main.home', ['questionnaire' => $questionnaires[0] ?? array()]))
-            ->cookie('next_questionnaire', json_encode($questionnaires[1] ?? array(), JSON_UNESCAPED_UNICODE), '3600')
-            ->cookie('next_questionnaire_id', $questionnaires[1]['user_id'] ?? '', '3600')
-            ->cookie('current_questionnaire_id', $questionnaires[0]['user_id'] ?? '', '3600');
+        Cookie::queue(Cookie::make('current_questionnaire_id', $questionnaires[0]['user_id'] ?? '', 45000));
+        Cookie::queue(Cookie::make('next_questionnaire_id', $questionnaires[1]['user_id'] ?? '', 45000));
+
+        return response(view('main.home', ['questionnaire' => $questionnaires[0] ?? array(), 'nextQuestionnaire' => $questionnaires[1] ?? '']));
     }
 
     public function actionQuestionnaire(Request $request): JsonResponse
@@ -50,11 +51,10 @@ class QuestionnaireController extends Controller
 
         $questionnaire = $this->getNextQuestionnaire();
 
-        return response()
-            ->json(['message' => $matchMessage ?? false])
-            ->cookie('next_questionnaire', json_encode($questionnaire[0] ?? array(), JSON_UNESCAPED_UNICODE), '3600')
-            ->cookie('next_questionnaire_id', $questionnaire[0]['user_id'] ?? '', '3600')
-            ->cookie('current_questionnaire_id', cookie('next_questionnaire_id') ?? '', '3600');
+        Cookie::queue(Cookie::make('current_questionnaire_id', Cookie::get('next_questionnaire_id') ?? '', 45000));
+        Cookie::queue(Cookie::make('next_questionnaire_id', $questionnaire[0]['user_id'] ?? '', 45000));
+
+        return response()->json(['message' => $matchMessage ?? false, 'questionnaire' => $questionnaire[0] ?? '']);
     }
 
     private function activeLike($selectedUserId, $message = ''): bool
@@ -81,14 +81,14 @@ class QuestionnaireController extends Controller
 
     private function getNextQuestionnaire($indexView = false): array
     {
-        if (auth()->user()->questionnaires()->count() < 2){
+        if (auth()->user()->questionnaires()->count() < 2) {
             $this->createQuestionnaires();
         }
 
-        $questionnaires = auth()->user()->questionnaires()->limit($indexView ? 2 : 1)->get()->toArray();
+        $questionnaires = auth()->user()->questionnaires()->skip($indexView ? 0 : 1)->limit($indexView ? 2 : 1)->get()->toArray();
 
-        if (!empty($questionnaires)){
-            foreach ($questionnaires as $key => $questionnaire){
+        if (!empty($questionnaires)) {
+            foreach ($questionnaires as $key => $questionnaire) {
                 $questionnaires[$key] = array_merge($questionnaire, json_decode($questionnaire['questionnaire_json'], true));
                 $questionnaires[$key]['date_birth'] = Carbon::parse($questionnaires[$key]['date_birth'])->age;
                 unset($questionnaires[$key]['questionnaire_json']);
@@ -100,8 +100,6 @@ class QuestionnaireController extends Controller
 
     private function getLastQuestionnaire(): mixed
     {
-
-
 
 
         if (!$questionnaire = auth()->user()->questionnaires()->first()) {

@@ -205,6 +205,8 @@
         let divAvatarItem = '<div id="carousel-item-ITEM_NUM" class="carousel-item hidden duration-700 ease-in-out"> <img src="{{ asset('storage/avatars/') }}AVATAR_NAME" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..."> </div>';
         let divIndicatorItem = '<button id="carousel-indicator-ITEM_NUM" type="button" class="carousel-indicator w-3 h-3 rounded-full" aria-current="INDICATOR_CURRENT" aria-label="Slide ITEM_NUM"></button>';
 
+        let nextQuestionnaire =  {!! json_encode($nextQuestionnaire, JSON_UNESCAPED_UNICODE) !!};
+
         $(document).ready(function () {
 
             $('.match-check').click(function () {
@@ -274,6 +276,12 @@
 
             actionPing(action)
 
+            if(nextQuestionnaire !== ''){
+                renderQuestionnaire(nextQuestionnaire)
+            }else {
+                $('.app-card-wrapper').empty().append(`@include('components.none_questionnaires')`);
+            }
+
             $.ajax({
                 url: '{{ route('questionnaires.action-questionnaire') }}',
                 method: 'POST',
@@ -291,7 +299,7 @@
                         return;
                     }
 
-                    renderQuestionnaire(response.questionnaire)
+                    nextQuestionnaire = response.questionnaire;
 
                     if (response.message) {
                         alertMatch('You have a match! Look who it is')
