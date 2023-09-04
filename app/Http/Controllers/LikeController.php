@@ -14,12 +14,4 @@ class LikeController extends Controller
         return response(view('main.likes', compact('profilesLikedUsers')));
     }
 
-    public function getLikesQuestionnaire(Request $request)
-    {
-
-        $cookieProfiles = json_decode('compact_profiles', true);
-
-        return response()->json(['success' => $cookieProfiles]);
-
-    }
 }

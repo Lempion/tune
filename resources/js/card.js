@@ -23,7 +23,7 @@ $(document).ready(function () {
                 $('.app-card-wrapper').removeClass('app-card-wrapper-plus');
                 $('.card-main').removeClass('flex-justify-items-center w-1/2').addClass('rounded-xl w-full');
                 $('.card-main .app-card-container').removeClass('flex-justify-items-center').after($('.card-style').text('About me')).after($('.profile-edit'));
-                $('.carousel').after($('.user-information').removeClass('pt-5'));
+                $('.user-avatars-items').after($('.user-information').removeClass('pt-5'));
                 $('.actions').removeClass('rounded-bl-lg').addClass('rounded-b-xl');
                 $('.card-plus').remove();
             }

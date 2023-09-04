@@ -7,6 +7,8 @@
     <title>{{ $title }}</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css" rel="stylesheet">
     <script>
         const Toast = Swal.mixin({
             toast: true,
@@ -59,44 +61,27 @@
             $(location).attr('href', '{{ route('questionnaires') }}')
         }
 
-        function renderSlider() {
-            let carouselItem = $('.carousel-item');
-            let carouselIndicator = $('.carousel-indicator');
-
-            let items = [];
-            let optionItems = [];
-
-            $.each(carouselItem, function (key, value) {
-                items[key] = {position: key, el: value}
-            });
-
-            $.each(carouselIndicator, function (key, value) {
-                optionItems[key] = {position: key, el: value}
-            });
-
-            const options = {
-                defaultPosition: 1,
-                interval: 3000,
-                indicators: {
-                    activeClasses: 'bg-white dark:bg-gray-800',
-                    inactiveClasses: 'bg-white/50 dark:bg-gray-800/50 hover:bg-white dark:hover:bg-gray-800',
-                    items: optionItems
+        function renderSlider(splideItem){
+            var splide = new Splide(splideItem, {
+                classes: {
+                    pagination: 'hidden',
+                    arrows: 'splide__arrows bg-orange-500',
+                    prev  : 'splide__arrow--prev left-0 h-full',
+                    next  : 'splide__arrow--next right-0 h-full',
                 },
-            };
+            });
+            var bar = splide.root.querySelector('.my-slider-progress-bar');
 
-            const carousel = new Carousel(items, options);
+            // Update the bar width:
+            splide.on('mounted move', function () {
+                var end = splide.Components.Controller.getEnd() + 1;
+                bar.style.width = String(100 * (splide.index + 1) / end) + '%';
+            });
 
-            carousel.slideTo(0)
-
-            $('#data-carousel-prev').click(function () {
-                carousel.prev();
-            })
-            $('#data-carousel-next').click(function () {
-                carousel.next();
-            })
+            splide.mount();
         }
     </script>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/css/slider.css', 'resources/js/app.js'])
 </head>
 
 <body class="w-full h-full bg-no-repeat bg-cover flex justify-center" style="background-image: url('{{ asset('storage/images/bg-main.jpg') }}')">

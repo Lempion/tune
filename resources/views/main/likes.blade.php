@@ -3,18 +3,34 @@
 @section('content')
 
     <div class="app-likes-wrapper overflow-hidden overflow-y-auto">
-        <div class="h-full w-full overflow-hidden overflow-y-auto profile-scrollbar">
+        <div class="w-full h-full bg-gray-700/50 absolute opacity-0 -z-10 ease-in-out blind"></div>
+        <div class="w-full h-full overflow-hidden overflow-y-auto profile-scrollbar">
             @if(!empty($profilesLikedUsers))
                 <div class="w-full h-[10%] flex-justify-items-center">
                     <h1 class="text-xl font-semibold text-gray-700 filter drop-shadow-gray-1">These are the people who
                         like you</h1>
                 </div>
                 <div class="flex flex-wrap w-full h-[90%]">
-                    @foreach($profilesLikedUsers as $profileLikedUser)
+                    @foreach($profilesLikedUsers as $key => $profileLikedUser)
                         <div class="app-card-likes-wrapper">
                             <div data-mini-liked-profile="{{ $profileLikedUser['user_id'] }}" class="app-card-likes-container relative">
-                                <img src="{{ asset('storage/avatars/' . $profileLikedUser['avatars'][0]) }}" class="w-full h-full w-full h-full object-cover" alt="">
-                                <div class="actions opacity-0 duration-500 ease-in-out absolute w-full bottom-0 h-[15%] bg-gradient-to-t from-fuchsia-50/90 to-[#F9DED5]/10 bg-opacity-10 z-[51]">
+                                <div class="splide h-full">
+                                    <div class="splide__track h-[99%]">
+                                        <ul class="splide__list">
+                                            @foreach($profileLikedUser['avatars'] as $image)
+                                                <li class="splide__slide">
+                                                    <img src="{{ asset('storage/avatars/' . $image) }}" class="w-full h-full object-cover img-item" alt="">
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+
+                                    <div class="my-slider-progress">
+                                        <div class="my-slider-progress-bar"></div>
+                                    </div>
+                                </div>
+
+                                <div class="actions actions-mini absolute transition-all duration-400 ease-in-out w-full bottom-0 h-[15%] bg-gradient-to-t from-fuchsia-50/90 to-[#F9DED5]/10 bg-opacity-10 z-[51] opacity-10">
                                     <div class="w-5/6 pb-2 h-full mx-auto flex items-center justify-around">
                                         <div class="">
                                             <svg onclick="actionQuestionnaire(this, 'dislike')" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="action w-12 h-12 fill-[#ff3347] cursor-pointer hover:fill-red-600 filter drop-shadow-red-1 hover:drop-shadow-red-2">
@@ -63,12 +79,6 @@
                         <p class="letter-maxlength text-xs font-semibold opacity-0 text-gray-700 absolute right-2 -top-2.5"></p>
                         <textarea placeholder="Write a message to this user" class="letter-message text-gray-700 font-semibold w-full h-full rounded-md cursor-pointer resize-none shadow-md bg-[#f5f0e9] border-2 border-orange-400/50 focus:ring-1 focus:ring-orange-400 focus:border-orange-400 profile-scrollbar" maxlength="150" name="" id=""></textarea>
                     </div>
-
-                    <div class="absolute top-2 right-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 letter-form-close stroke-gray-500 cursor-pointer hover:stroke-2 hover:stroke-gray-700">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                        </svg>
-                    </div>
                 </div>
             </div>
 
@@ -77,38 +87,22 @@
             <div class="card-main relative transition-all duration-200 opacity-100 w-full h-full">
 
                 <div class="app-card-container rounded-t-xl cursor-default">
-                    <div class="carousel relative w-full">
-                        <div class="user-avatars-items relative h-56 overflow-hidden rounded-lg sm:h-64 xl:h-80 2xl:h-96">
-                            @foreach($questionnaire['avatars'] as $key => $avatar)
-                                <div id="carousel-item-{{ $key + 1 }}" class="carousel-item hidden duration-700 ease-in-out">
-                                    <img src="{{ asset('storage/avatars/' . $avatar) }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
-                                </div>
-                            @endforeach
+                    <div class="user-avatars-items relative h-56 overflow-hidden rounded-lg sm:h-64 xl:h-80 2xl:h-96">
+                        <div class="splide h-full">
+                            <div class="splide__track h-[99%]">
+                                <ul class="splide__list">
+                                    @foreach($questionnaire['avatars'] as $image)
+                                        <li class="splide__slide">
+                                            <img src="{{ asset('storage/avatars/' . $image) }}" class="w-full h-full object-cover" alt="">
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+
+                            <div class="my-slider-progress">
+                                <div class="my-slider-progress-bar"></div>
+                            </div>
                         </div>
-
-                        <div class="user-carousel-indicator absolute z-30 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
-                            @for($i = 0; $i < count($questionnaire['avatars']); $i++)
-                                <button id="carousel-indicator-{{ $i + 1 }}" type="button" class="carousel-indicator w-3 h-3 rounded-full" aria-current="{{ $i === 0 }}" aria-label="Slide {{ $i + 1 }}"></button>
-                            @endfor
-                        </div>
-
-                        <button id="data-carousel-prev" type="button" class="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none">
-                    <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                        <svg class="w-4 h-4 text-white dark:text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
-                        </svg>
-                        <span class="hidden">Previous</span>
-                    </span>
-                        </button>
-
-                        <button id="data-carousel-next" type="button" class="absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none">
-                    <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                        <svg class="w-4 h-4 text-white dark:text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-                        </svg>
-                        <span class="hidden">Next</span>
-                    </span>
-                        </button>
                     </div>
 
                     <div class="user-information w-[95%] mx-auto space-y-4 pb-20">
@@ -234,105 +228,40 @@
 
         $(document).ready(function () {
 
-            renderSlider();
+            var splideElems = $('.splide');
 
-            $('.app-card-likes-container').hover(
-                function () {
-                    $('.actions', this).addClass('opacity-100');
+            for (var i = 0; i < splideElems.length; i++) {
+                renderSlider(splideElems[i]);
+            }
+
+            $('.actions-mini').hover(
+                function (){
+                    $(this).addClass('!opacity-80')
                 },
-                function () {
-                    $('.actions').removeClass('opacity-100');
+                function (){
+                    $(this).removeClass('!opacity-80')
                 }
             )
 
-            $('.app-card-likes-container').click(function () {
+            $('.app-card-likes-container').click(function (e) {
+
+                if (!$(e.target).hasClass('img-item')) {
+                    return;
+                }
+
+                $('.blind').addClass('opacity-100 !z-20')
 
                 $('div[data-liked-profile]').addClass('!hidden');
 
                 let userId = $(this).data('mini-liked-profile');
 
                 $('div[data-liked-profile|="' + userId + '"]').removeClass('!hidden');
-
-                {{--$.ajax({--}}
-                {{--    url: '{{ route('get-likes-questionnaire') }}',--}}
-                {{--    type: 'POST',--}}
-                {{--    data: {--}}
-                {{--        '_token': '{{ csrf_token() }}',--}}
-                {{--        'user_id': userId,--}}
-                {{--    },--}}
-                {{--    success: function (response) {--}}
-                {{--        console.log('success');--}}
-                {{--        console.log(response);--}}
-                {{--    },--}}
-                {{--    error: function (response) {--}}
-                {{--        console.log('error');--}}
-                {{--        console.log(response);--}}
-                {{--    }--}}
-                {{--})--}}
-
             })
 
-            function renderQuestionnaire(questionnaire) {
-                $('.user-interests_items').empty();
-                $('.user-music_items').empty();
-                $('.user-avatars-items').empty();
-                $('.user-carousel-indicator').empty();
-
-                $('.user-name').text(questionnaire.name + ', ' + questionnaire.date_birth);
-                $('.user-about_text').text(questionnaire.about);
-
-                $.each(questionnaire.avatars, function (key, imgName) {
-                    $('.user-avatars-items').append(divAvatarItem.replace('ITEM_NUM', (key + 1)).replace('AVATAR_NAME', '/' + imgName));
-                    $('.user-carousel-indicator').append(divIndicatorItem.replace('ITEM_NUM', (key + 1)).replace('INDICATOR_CURRENT', (key === 0)).replace('ITEM_NUM', (key + 1)));
-                })
-
-                renderSlider();
-
-                if (typeof questionnaire.education !== 'undefined' && questionnaire.education !== null) {
-                    $('.user-education_text').text(questionnaire.education);
-                    $('.user-education').removeClass('hidden');
-                } else {
-                    $('.user-education').addClass('hidden');
-                }
-
-                if (typeof questionnaire.job !== 'undefined' && questionnaire.job !== null) {
-                    $('.user-job_text').text(questionnaire.job);
-                    $('.user-job').removeClass('hidden');
-                } else {
-                    $('.user-job').addClass('hidden');
-                }
-
-                if ((typeof questionnaire.movies !== 'undefined' && questionnaire.movies !== null) && (typeof questionnaire.books !== 'undefined' && questionnaire.books !== null)) {
-                    $('.user-movies-and-books').empty().append(titleBooksMovies.text('Movies and books')).append(divMovies.replace('TEXT_MOVIES', questionnaire.movies)).append(divBooks.replace('TEXT_BOOKS', questionnaire.books));
-                } else if (typeof questionnaire.movies !== 'undefined' && questionnaire.movies !== null) {
-                    $('.user-movies-and-books').empty().append(titleBooksMovies.text('Movies')).append(divMovies.replace('TEXT_MOVIES', questionnaire.movies));
-                } else if (typeof questionnaire.books !== 'undefined' && questionnaire.books !== null) {
-                    $('.user-movies-and-books').empty().append(titleBooksMovies.text('Books')).append(divBooks.replace('TEXT_BOOKS', questionnaire.books));
-                } else {
-                    $('.user-movies-and-books').empty()
-                }
-
-                if (typeof questionnaire.interests !== 'undefined' && questionnaire.interests !== null && questionnaire.interests.length !== 0) {
-                    $.each(questionnaire.interests, function (word, icon) {
-                        $('.user-interests_items').append(divInterestItem.replace('INTEREST_ICON', icon).replace('INTEREST_WORD', word))
-                    })
-
-                    $('.user-interests').removeClass('hidden');
-                } else {
-                    $('.user-interests').addClass('hidden');
-                }
-
-                if (typeof questionnaire.music !== 'undefined' && questionnaire.music !== null && questionnaire.music.length !== 0) {
-                    $.each(questionnaire.music, function (key, word) {
-                        $('.user-music_items').append(divMusicItem.replace('MUSIC_WORD', word))
-                    })
-
-                    $('.user-music').removeClass('hidden');
-                } else {
-                    $('.user-music').addClass('hidden');
-                }
-            }
+            $('.blind').click(function () {
+                $(this).removeClass('opacity-100 !z-20');
+                $('div[data-liked-profile]').addClass('!hidden');
+            })
         })
     </script>
-
 @endsection

@@ -12,38 +12,22 @@
         <div class="card-main relative transition-all duration-200 opacity-100 w-full h-full">
             @if(isset($user['profile']) && !$user['profile']->isEmpty)
                 <div class="app-card-container rounded-t-xl cursor-default">
-                    <div class="carousel relative w-full">
-                        <div class="user-avatars-items relative h-56 overflow-hidden rounded-lg sm:h-64 xl:h-80 2xl:h-96">
-                            @foreach($user['avatars'] as $key => $avatar)
-                                <div id="carousel-item-{{ $key + 1 }}" class="carousel-item hidden duration-700 ease-in-out">
-                                    <img src="{{ asset('storage/avatars/' . $avatar->image_name) }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
-                                </div>
-                            @endforeach
+                    <div class="user-avatars-items relative h-56 overflow-hidden rounded-lg sm:h-64 xl:h-80 2xl:h-96">
+                        <div class="splide h-full">
+                            <div class="splide__track h-[99%]">
+                                <ul class="splide__list">
+                                    @foreach($user['avatars'] as $avatar)
+                                        <li class="splide__slide">
+                                            <img src="{{ asset('storage/avatars/' . $avatar->image_name) }}" class="w-full h-full object-cover" alt="">
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+
+                            <div class="my-slider-progress">
+                                <div class="my-slider-progress-bar"></div>
+                            </div>
                         </div>
-
-                        <div class="user-carousel-indicator absolute z-30 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
-                            @for($i = 0; $i < count($user['avatars']); $i++)
-                                <button id="carousel-indicator-{{ $i + 1 }}" type="button" class="carousel-indicator w-3 h-3 rounded-full" aria-current="{{ $i === 0 }}" aria-label="Slide {{ $i + 1 }}"></button>
-                            @endfor
-                        </div>
-
-                        <button id="data-carousel-prev" type="button" class="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none">
-                    <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                        <svg class="w-4 h-4 text-white dark:text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
-                        </svg>
-                        <span class="hidden">Previous</span>
-                    </span>
-                        </button>
-
-                        <button id="data-carousel-next" type="button" class="absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none">
-                    <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                        <svg class="w-4 h-4 text-white dark:text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-                        </svg>
-                        <span class="hidden">Next</span>
-                    </span>
-                        </button>
                     </div>
 
                     <div class="user-information w-[95%] mx-auto space-y-4 pb-20">
@@ -150,7 +134,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"></path>
                     </svg>
                     <button class="create-profile relative inline-flex items-center justify-center p-1 mb-3 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800">
-                  <span class="relative px-10 py-3 transition-all ease-in duration-75 bg-[#f7e5dd] dark:bg-gray-900 rounded-md group-hover:bg-opacity-0 text-2xl text-gray-700">
+                  <span class="relative filter drop-shadow-gray-2 px-10 py-3 transition-all ease-in duration-75 bg-[#f7e5dd] dark:bg-gray-900 rounded-md group-hover:bg-opacity-0 text-2xl text-gray-700">
                       Create Profile
                   </span>
                     </button>
@@ -171,7 +155,7 @@
                 $(location).attr('href', '{{ route('profile.edit') }}')
             })
 
-            renderSlider();
+            renderSlider($('.splide').get(0));
 
             @error('info') alertInfo('{{ $message }}') @enderror
         });

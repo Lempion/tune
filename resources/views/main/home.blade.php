@@ -9,7 +9,7 @@
     </div>
 
     <div class="app-card-wrapper w-full h-full flex-justify-items-center rounded-xl">
-        <div class="letter-form w-full h-full bg-gray-700/50 -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 z-50 flex-justify-items-center rounded-xl absolute !hidden">
+        <div class="letter-form w-full h-full bg-gray-700/50 -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 z-[60] flex-justify-items-center rounded-xl absolute !hidden">
             <div class="form-questionnaire-message bg-gradient-to-r from-[#F9DED5] to-[#F5F1EA] w-[95%] h-72 rounded-md relative">
                 <div class="h-2/6 flex-justify-items-center flex-col py-2">
                     <div class="letter action">
@@ -23,12 +23,6 @@
                     <p class="letter-maxlength text-xs font-semibold opacity-0 text-gray-700 absolute right-2 -top-2.5"></p>
                     <textarea placeholder="Write a message to this user" class="letter-message text-gray-700 font-semibold w-full h-full rounded-md cursor-pointer resize-none shadow-md bg-[#f5f0e9] border-2 border-orange-400/50 focus:ring-1 focus:ring-orange-400 focus:border-orange-400 profile-scrollbar" maxlength="150" name="" id=""></textarea>
                 </div>
-
-                <div class="absolute top-2 right-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 letter-form-close stroke-gray-500 cursor-pointer hover:stroke-2 hover:stroke-gray-700">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                </div>
             </div>
         </div>
 
@@ -37,38 +31,22 @@
         <div class="card-main relative transition-all duration-200 opacity-100 w-full h-full">
             @if(!empty($questionnaire))
                 <div class="app-card-container rounded-t-xl cursor-default">
-                    <div class="carousel relative w-full">
-                        <div class="user-avatars-items relative h-56 overflow-hidden rounded-lg sm:h-64 xl:h-80 2xl:h-96">
-                            @foreach($questionnaire['avatars'] as $key => $avatar)
-                                <div id="carousel-item-{{ $key + 1 }}" class="carousel-item hidden duration-700 ease-in-out">
-                                    <img src="{{ asset('storage/avatars/' . $avatar) }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
-                                </div>
-                            @endforeach
+                    <div class="user-avatars-items relative h-56 overflow-hidden rounded-lg sm:h-64 xl:h-80 2xl:h-96">
+                        <div class="splide h-full">
+                            <div class="splide__track h-[99%]">
+                                <ul class="splide__list">
+                                    @foreach($questionnaire['avatars'] as $image)
+                                        <li class="splide__slide">
+                                            <img src="{{ asset('storage/avatars/' . $image) }}" class="w-full h-full object-cover" alt="">
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+
+                            <div class="my-slider-progress">
+                                <div class="my-slider-progress-bar"></div>
+                            </div>
                         </div>
-
-                        <div class="user-carousel-indicator absolute z-30 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
-                            @for($i = 0; $i < count($questionnaire['avatars']); $i++)
-                                <button id="carousel-indicator-{{ $i + 1 }}" type="button" class="carousel-indicator w-3 h-3 rounded-full" aria-current="{{ $i === 0 }}" aria-label="Slide {{ $i + 1 }}"></button>
-                            @endfor
-                        </div>
-
-                        <button id="data-carousel-prev" type="button" class="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none">
-                    <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                        <svg class="w-4 h-4 text-white dark:text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
-                        </svg>
-                        <span class="hidden">Previous</span>
-                    </span>
-                        </button>
-
-                        <button id="data-carousel-next" type="button" class="absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none">
-                    <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-                        <svg class="w-4 h-4 text-white dark:text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-                        </svg>
-                        <span class="hidden">Next</span>
-                    </span>
-                        </button>
                     </div>
 
                     <div class="user-information w-[95%] mx-auto space-y-4 pb-20">
@@ -202,10 +180,9 @@
         let divInterestItem = '<div class="interest-item flex items-center border-2 border-orange-400/60 rounded-2xl py-0.5 px-2 my-0.5 mx-1 bg-gradient-to-r from-orange-300/60 to-pink-500/40"><div class="mr-1"><span class="user-interests_item_icon font-normal text-xl">INTEREST_ICON</span></div> <p class="user-interests_item_word">INTEREST_WORD</p></div>';
         let divMusicItem = '<div class="music-item flex items-center border-2 border-orange-400/60 rounded-2xl py-0.5 px-2 my-0.5 mx-1 bg-gradient-to-r from-orange-300/60 to-pink-500/40"><p class="user-music_item_text">MUSIC_WORD</p></div>';
 
-        let divAvatarItem = '<div id="carousel-item-ITEM_NUM" class="carousel-item hidden duration-700 ease-in-out"> <img src="{{ asset('storage/avatars/') }}AVATAR_NAME" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..."> </div>';
-        let divIndicatorItem = '<button id="carousel-indicator-ITEM_NUM" type="button" class="carousel-indicator w-3 h-3 rounded-full" aria-current="INDICATOR_CURRENT" aria-label="Slide ITEM_NUM"></button>';
+        let divAvatarItem = '<li class="splide__slide"><img src="http://tune.none/storage/avatars/AVATAR_NAME" class="w-full h-full object-cover" alt=""></li>';
 
-        let nextQuestionnaire =  {!! json_encode($nextQuestionnaire, JSON_UNESCAPED_UNICODE) !!};
+        let nextQuestionnaire = {!! json_encode($nextQuestionnaire, JSON_UNESCAPED_UNICODE) !!};
 
         $(document).ready(function () {
 
@@ -221,8 +198,8 @@
                 .click(function () {
                     let message = $('.letter-message').val();
 
-                    if (message.length === 0 || message.length > 150) {
-                        alertError('OSIBKA SYKA !');
+                    if (message.length < 10 || message.length > 150) {
+                        alertError('Message is too short!');
                         return;
                     }
                     actionQuestionnaire(this, 'message', message);
@@ -251,8 +228,10 @@
                 $('.letter-maxlength').removeClass('opacity-100')
             })
 
-            $('.letter-form-close').click(function () {
-                $('.letter-form').addClass('!hidden');
+            $('.letter-form').click(function (e){
+                if($(e.target).hasClass('letter-form')){
+                    $('.letter-form').addClass('!hidden');
+                }
             })
 
             function showMaxLength(textareaThis) {
@@ -262,7 +241,7 @@
                 $('.letter-maxlength').addClass('opacity-100').text(charsNow + '/' + charsMax);
             }
 
-            renderSlider();
+            renderSlider($('.splide').get(0));
         })
 
         function actionQuestionnaire(elem, action, message = null) {
@@ -274,11 +253,12 @@
 
             $('.action').addClass('disabled');
 
+            $('.letter-form').addClass('!hidden');
             actionPing(action)
 
-            if(nextQuestionnaire !== ''){
+            if (nextQuestionnaire !== '') {
                 renderQuestionnaire(nextQuestionnaire)
-            }else {
+            } else {
                 $('.app-card-wrapper').empty().append(`@include('components.none_questionnaires')`);
             }
 
@@ -291,6 +271,8 @@
                     'message': message
                 },
                 success: function (response) {
+                    nextQuestionnaire = response.questionnaire;
+
                     $('.letter-message').val('');
                     $('.letter-form').addClass('!hidden')
 
@@ -298,8 +280,6 @@
                         $('.app-card-wrapper').empty().append(`@include('components.none_questionnaires')`);
                         return;
                     }
-
-                    nextQuestionnaire = response.questionnaire;
 
                     if (response.message) {
                         alertMatch('You have a match! Look who it is')
@@ -324,18 +304,17 @@
         function renderQuestionnaire(questionnaire) {
             $('.user-interests_items').empty();
             $('.user-music_items').empty();
-            $('.user-avatars-items').empty();
+            $('.splide__list').empty();
             $('.user-carousel-indicator').empty();
 
             $('.user-name').text(questionnaire.name + ', ' + questionnaire.date_birth);
             $('.user-about_text').text(questionnaire.about);
 
             $.each(questionnaire.avatars, function (key, imgName) {
-                $('.user-avatars-items').append(divAvatarItem.replace('ITEM_NUM', (key + 1)).replace('AVATAR_NAME', '/' + imgName));
-                $('.user-carousel-indicator').append(divIndicatorItem.replace('ITEM_NUM', (key + 1)).replace('INDICATOR_CURRENT', (key === 0)).replace('ITEM_NUM', (key + 1)));
+                $('.splide__list').append(divAvatarItem.replace('AVATAR_NAME', '/' + imgName));
             })
 
-            renderSlider();
+            renderSlider($('.splide').get(0));
 
             if (typeof questionnaire.education !== 'undefined' && questionnaire.education !== null) {
                 $('.user-education_text').text(questionnaire.education);
