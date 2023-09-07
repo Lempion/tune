@@ -101,7 +101,12 @@
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/>
                     </svg>
 
-                    <p>Likes</p>
+                    <div class="relative">
+                        <p>Likes</p>
+                        @if($liked = auth()->user()->countLiked)
+                            <div class="count-liked w-5 h-5 bg-gradient-to-t from-red-500 to-orange-400 shadow-sm shadow-pink-500 rounded-full text-white text-center text-sm font-semibold absolute -right-6 -top-1 flex-justify-items-center {{ $active !== 'likes' ?: 'border-2 text-xs' }}">{{ $liked }}</div>
+                        @endif
+                    </div>
                 </div>
 
                 <div data-link="{{ route('questionnaires') }}" class="chats nav-item {{ $active !== 'chats' ?: 'select-nav-item' }} flex justify-center items-center cursor-pointer h-full w-1/4">

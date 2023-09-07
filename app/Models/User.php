@@ -64,6 +64,11 @@ class User extends Authenticatable
         return $this->hasMany(Like::class);
     }
 
+    public function getCountLikedAttribute()
+    {
+        return Like::where('selected_user_id', auth()->id())->where('match', 0)->count();
+    }
+
     public function getLikedAttribute(): array
     {
         $profilesLikedUsers = Like::join('packed_profiles', 'likes.user_id', '=', 'packed_profiles.user_id')

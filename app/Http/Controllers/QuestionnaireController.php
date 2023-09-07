@@ -34,7 +34,7 @@ class QuestionnaireController extends Controller
             'action' => ['in:like,message,dislike'],
             'message' => ['required_if:action,message', 'string', 'nullable', 'max:30'],
         ], [
-            'action.in' => 'Unknown error, please refresh the page.!'
+            'action.in' => 'Unknown error, please refresh the page.'
         ]);
 
         $this->deleteCompletedQuestionnaire();
@@ -42,10 +42,10 @@ class QuestionnaireController extends Controller
         switch ($request->action) {
             case 'like':
             case 'message':
-                $matchMessage = $this->activeLike($currentQuestionnaireUserId, $request->message ?? '');
+                $matchMessage = ActionController::activeLike($currentQuestionnaireUserId, $request->message ?? '');
                 break;
             case 'dislike':
-                $this->activeDislike($currentQuestionnaireUserId);
+                ActionController::activeDislike($currentQuestionnaireUserId);
                 break;
         }
 
@@ -57,27 +57,27 @@ class QuestionnaireController extends Controller
         return response()->json(['message' => $matchMessage ?? false, 'questionnaire' => $questionnaire[0] ?? '']);
     }
 
-    private function activeLike($selectedUserId, $message = ''): bool
-    {
-        $matchUser = Like::where('user_id', $selectedUserId)->where('selected_user_id', auth()->user()->id)->first();
-
-        if (isset($matchUser)) {
-            $matchUser->match = 1;
-            $matchUser->save();
-        }
-
-        auth()->user()
-            ->likes()
-            ->create(['selected_user_id' => $selectedUserId, 'message' => $message, 'match' => isset($matchUser)])
-            ->save();
-
-        return (isset($matchUser));
-    }
-
-    private function activeDislike($selectedUserId): void
-    {
-        Like::where('user_id', $selectedUserId)->where('selected_user_id', auth()->id())->delete();
-    }
+//    private function activeLike($selectedUserId, $message = ''): bool
+//    {
+//        $matchUser = Like::where('user_id', $selectedUserId)->where('selected_user_id', auth()->user()->id)->first();
+//
+//        if (isset($matchUser)) {
+//            $matchUser->match = 1;
+//            $matchUser->save();
+//        }
+//
+//        auth()->user()
+//            ->likes()
+//            ->create(['selected_user_id' => $selectedUserId, 'message' => $message, 'match' => isset($matchUser)])
+//            ->save();
+//
+//        return (isset($matchUser));
+//    }
+//
+//    private function activeDislike($selectedUserId): void
+//    {
+//        Like::where('user_id', $selectedUserId)->where('selected_user_id', auth()->id())->delete();
+//    }
 
     private function getNextQuestionnaire($indexView = false): array
     {

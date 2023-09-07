@@ -27,6 +27,7 @@ Route::middleware(['auth', 'verified.phone'])->group(function () {
         Route::post('/action_questionnaire', [QuestionnaireController::class, 'actionQuestionnaire'])->name('questionnaires.action-questionnaire');
 
         Route::get('likes', [LikeController::class, 'index'])->name('likes');
+        Route::post('/action_like', [LikeController::class, 'actionQuestionnaire'])->name('like.action-questionnaire');
     });
 
     Route::post('/upload_avatar', [ProfileController::class, 'uploadAvatar'])->name('profile.avatar-upload');

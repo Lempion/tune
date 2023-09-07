@@ -251,7 +251,7 @@
                 return;
             }
 
-            $('.action').addClass('disabled');
+            $('.action').addClass('disabled hover:cursor-not-allowed');
 
             $('.letter-form').addClass('!hidden');
             actionPing(action)
@@ -282,17 +282,17 @@
                     }
 
                     if (response.message) {
-                        alertMatch('You have a match! Look who it is')
+                        alertMatch('You have a match! Look who it is');
                     }
 
-                    $('.action').removeClass('disabled');
+                    $('.action').removeClass('disabled hover:cursor-not-allowed');
                 },
                 error: function (response) {
                     let errors = response.responseJSON.errors;
 
                     $.each(errors, function (key, message) {
                         if (key === 'message') {
-                            $('.action').removeClass('disabled');
+                            $('.action').removeClass('disabled hover:cursor-not-allowed');
                         }
 
                         alertError(message)
