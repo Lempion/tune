@@ -30,6 +30,20 @@
                                     </div>
                                 </div>
 
+                                @if(!empty($profileLikedUser['message']))
+                                    <div class="absolute top-0 left-0 z-20 cursor-pointer letter-icon opacity-80">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 stroke-0.5 stroke-blue-800 fill-purple-400 cursor-pointer filter drop-shadow-pink-1">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/>
+                                        </svg>
+                                    </div>
+
+                                    <div class="letter-message hidden absolute top-0 left-0 z-[21] w-full h-full z-10">
+                                        <div class="w-full h-full overflow-auto profile-scrollbar bg-orange-100 p-1 text-sm cursor-alias">
+                                            <p class="filter drop-shadow-gray-1">{{ $profileLikedUser['message'] }}</p>
+                                        </div>
+                                    </div>
+                                @endif
+
                                 <div class="actions actions-mini absolute transition-all duration-400 ease-in-out w-full bottom-0 h-[15%] bg-gradient-to-t from-fuchsia-50/90 to-[#F9DED5]/10 bg-opacity-10 z-[51] opacity-10">
                                     <div class="w-5/6 pb-2 h-full mx-auto flex items-center justify-around">
                                         <div class="">
@@ -55,7 +69,7 @@
     </div>
 
     @foreach($profilesLikedUsers as $questionnaire)
-        <div data-liked-profile="{{ $questionnaire['user_id'] }}" class="app-card-wrapper !absolute w-full h-full flex-justify-items-center rounded-xl !hidden">
+        <div data-liked-profile="{{ $questionnaire['user_id'] }}" class="app-card-wrapper !h-[65%] !absolute flex-justify-items-center rounded-xl !hidden">
             <div class="card-main relative transition-all duration-200 opacity-100 w-full h-full">
 
                 <div class="app-card-container rounded-t-xl cursor-default">
@@ -251,6 +265,20 @@
                     $(this).removeClass('!opacity-80')
                 }
             )
+
+            $('.letter-icon').click(function () {
+                $('.letter-message', $(this).parent()).removeClass('hidden');
+            }).hover(function(){
+                $(this).addClass('!opacity-100');
+            },
+            function(){
+                $(this).removeClass('!opacity-100');
+            })
+
+            $('.letter-message').click(function () {
+                $(this).addClass('hidden');
+            })
+
 
             $('.app-card-likes-container').click(function (e) {
 
