@@ -116,7 +116,7 @@
             function showErrors(errors) {
                 $.each(errors, function (index, value) {
                     $.each(value, function (indexError, message) {
-                        $('.error-' + index).append('<p class="text-sm text-red-600 pt-1">' + message + '</p>');
+                        $('.error-' + index).append('<p class="text-sm font-bold text-red-600 pt-1 drop-shadow-red-1">' + message + '</p>');
                     });
                 });
             }

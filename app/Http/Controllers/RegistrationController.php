@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RegistrationRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -19,13 +20,8 @@ class RegistrationController extends Controller
         return view('auth.register');
     }
 
-    public function registration(Request $request): JsonResponse
+    public function registration(RegistrationRequest $request): JsonResponse
     {
-        $request->validate([
-            'phone' => ['required', 'digits:11', 'unique:users,phone'],
-            'password' => ['required', 'confirmed', 'min:5', 'max:30'],
-        ]);
-
         $user = new User();
         $user->phone = $request->phone;
         $user->password = Hash::make($request->password);

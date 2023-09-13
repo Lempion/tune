@@ -130,11 +130,11 @@
                 </div>
             @else
                 <div class="w-full h-full flex-justify-items-center flex-col">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-36 h-36 stroke-0.5 stroke-pink-600 filter drop-shadow-pink-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-52 h-52 stroke-0.5 stroke-pink-600 filter drop-shadow-pink-1">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"></path>
                     </svg>
                     <button class="create-profile relative inline-flex items-center justify-center p-1 mb-3 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-pink-500 to-orange-400 group-hover:from-pink-500 group-hover:to-orange-400 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800">
-                  <span class="relative filter drop-shadow-gray-2 px-10 py-3 transition-all ease-in duration-75 bg-[#f7e5dd] dark:bg-gray-900 rounded-md group-hover:bg-opacity-0 text-2xl text-gray-700">
+                  <span class="relative shadow-inner px-10 py-3 transition-all ease-in duration-75 bg-[#f7e5dd] dark:bg-gray-900 rounded-md group-hover:bg-opacity-0 text-2xl text-gray-700">
                       Create Profile
                   </span>
                     </button>

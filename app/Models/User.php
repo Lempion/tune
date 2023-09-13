@@ -64,7 +64,7 @@ class User extends Authenticatable
         return $this->hasMany(Like::class);
     }
 
-    public function getCountLikedAttribute()
+    public function getCountLikedAttribute(): int
     {
         return Like::where('selected_user_id', auth()->id())->where('match', 0)->count();
     }
@@ -109,14 +109,9 @@ class User extends Authenticatable
         return compact('profile', 'avatars', 'music', 'interests');
     }
 
-    public function questionnaires()
+    public function questionnaires(): HasMany
     {
         return $this->hasMany(Questionnaire::class);
-    }
-
-    public function getLastQuestionnaireAttribute()
-    {
-
     }
 
     public function hasVerifiedPhone(): bool

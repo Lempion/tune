@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Like;
+use App\Http\Requests\ActionRequest;
 use App\Models\PackedProfile;
 use App\Models\ProcessedProfile;
 use App\Models\Questionnaire;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Cookie;
 
 class QuestionnaireController extends Controller
 {
 
-    public function index()
+    public function index(): Response
     {
         $questionnaires = $this->getNextQuestionnaire(true);
 
@@ -24,18 +24,11 @@ class QuestionnaireController extends Controller
         return response(view('main.home', ['questionnaire' => $questionnaires[0] ?? array(), 'nextQuestionnaire' => $questionnaires[1] ?? '']));
     }
 
-    public function actionQuestionnaire(Request $request): JsonResponse
+    public function actionQuestionnaire(ActionRequest $request): JsonResponse
     {
         if (!$currentQuestionnaireUserId = $request->cookie('current_questionnaire_id')) {
             return response()->json(['errors' => ['fatal' => 'Unknown error, please refresh the page.']], 422);
         }
-
-        $request->validate([
-            'action' => ['in:like,message,dislike'],
-            'message' => ['required_if:action,message', 'string', 'nullable', 'max:30'],
-        ], [
-            'action.in' => 'Unknown error, please refresh the page.'
-        ]);
 
         $this->deleteCompletedQuestionnaire();
 
@@ -57,28 +50,6 @@ class QuestionnaireController extends Controller
         return response()->json(['message' => $matchMessage ?? false, 'questionnaire' => $questionnaire[0] ?? '']);
     }
 
-//    private function activeLike($selectedUserId, $message = ''): bool
-//    {
-//        $matchUser = Like::where('user_id', $selectedUserId)->where('selected_user_id', auth()->user()->id)->first();
-//
-//        if (isset($matchUser)) {
-//            $matchUser->match = 1;
-//            $matchUser->save();
-//        }
-//
-//        auth()->user()
-//            ->likes()
-//            ->create(['selected_user_id' => $selectedUserId, 'message' => $message, 'match' => isset($matchUser)])
-//            ->save();
-//
-//        return (isset($matchUser));
-//    }
-//
-//    private function activeDislike($selectedUserId): void
-//    {
-//        Like::where('user_id', $selectedUserId)->where('selected_user_id', auth()->id())->delete();
-//    }
-
     private function getNextQuestionnaire($indexView = false): array
     {
         if (auth()->user()->questionnaires()->count() < 2) {
@@ -98,20 +69,7 @@ class QuestionnaireController extends Controller
         return $questionnaires;
     }
 
-    private function getLastQuestionnaire(): mixed
-    {
-
-
-        if (!$questionnaire = auth()->user()->questionnaires()->first()) {
-            if (!$questionnaire = $this->createQuestionnaires()) {
-                return array();
-            }
-        }
-
-        return collect(json_decode($questionnaire->questionnaire_json));
-    }
-
-    private function deleteCompletedQuestionnaire()
+    private function deleteCompletedQuestionnaire(): void
     {
         Questionnaire::where('user_id', auth()->user()->id)
             ->where('questionnaire_json', 'like', '%"user_id":' . request()->cookie('current_questionnaire_id') . '%')
@@ -126,6 +84,8 @@ class QuestionnaireController extends Controller
             ->get()
             ->pluck('processed_questionnaire_id')
             ->toArray();
+
+        $processedQuestionnaire[] = auth()->id();
 
         // Сделать логику чтобы подбирались люди по интересам и т.д, короче логику
         $packedProfiles = PackedProfile::inRandomOrder()

@@ -509,8 +509,6 @@
                     $('.upload-image').val('');
                 },
                 error: function (response) {
-                    console.log('error')
-                    console.log(response)
                 }
             })
         }
@@ -558,10 +556,6 @@
                 $(this).addClass('selected-item-save');
                 $('.wrapper-' + prefixClass + '_items').append($(this).clone());
             })
-
-            console.log(countSelectedItems)
-            console.log(blockText)
-            console.log(prefixClass)
 
             if (countSelectedItems) {
                 $(blockText).addClass('hidden');

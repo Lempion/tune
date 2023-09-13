@@ -45,7 +45,7 @@
                 $('form').removeClass('opacity-100').addClass('opacity-0');
                 $('.load-wrapper').removeClass('opacity-0').addClass('opacity-100');
 
-                $('.error').each(function (e) {
+                $('.error').each(function () {
                     $(this).html('');
                 })
 
@@ -59,9 +59,6 @@
                         'password_confirmation': $('#password_confirmation').val(),
                     },
                     success: function (response) {
-
-                        console.log(response)
-
                         if (response['success']) {
                             $(location).attr('href', response['success']['link']);
                         }
@@ -72,7 +69,7 @@
 
                         $.each(errors, function (index, value) {
                             $.each(value, function (indexError, message) {
-                                $('.error-' + index).append('<p class="text-sm text-red-600 pt-1">' + message + '</p>');
+                                $('.error-' + index).append('<p class="text-sm font-bold text-red-600 pt-1 drop-shadow-red-1">' + message + '</p>');
                             });
                         });
 

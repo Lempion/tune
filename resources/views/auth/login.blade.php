@@ -13,7 +13,7 @@
 
                             @error('phone')
                             <div>
-                                <p class="text-sm text-red-600 pt-1"> {{ $message }} </p>
+                                <p class="text-sm font-bold text-red-600 pt-1 drop-shadow-red-1"> {{ $message }} </p>
                             </div>
                             @enderror
                         </div>
@@ -22,7 +22,7 @@
 
                             @error('password')
                             <div>
-                                <p class="text-sm text-red-600 pt-1"> {{ $message }} </p>
+                                <p class="text-sm font-bold text-red-600 pt-1 drop-shadow-red-1"> {{ $message }} </p>
                             </div>
                             @enderror
                         </div>
